@@ -1,9 +1,0 @@
-keyring::key_set_with_value(service = 'genai_gpt4o_endpoint', password = "https://genaiapimna.jnj.com/openai-chat/openai/deployments/gpt-4o/chat/completions?api-version=2023-03-15-preview")
-
-keyring::key_set_with_value(service = 'genai_o3_endpoint', password = "https://genaiapimna.jnj.com/openai-chat/openai/deployments/o3/chat/completions?api-version=2024-12-01-preview")
-
-keyring::key_set_with_value(service = 'genai_api_gpt4_key', password = "bb0adcb0d18e40a2bbd4d7872bbf3946")
-
-keyring::key_set_with_value(service = 'genai_embed_endpoint', password = "https://genaiapimna.jnj.com/openai-embeddings/openai/deployments/text-embedding-3-large/embeddings?api-version=2022-12-01")
-
-keyring::key_set_with_value(service = 'genai_api_embed_key', password = "c1108d05f8ba42b8a50ccc3ddb85e438")
