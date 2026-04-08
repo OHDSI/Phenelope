@@ -1,0 +1,15 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/articles/CreatingLLMConceptSets.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/condenseConceptSet.html</loc></url>
+<url><loc>/reference/createClinicalDescription.html</loc></url>
+<url><loc>/reference/createConceptSet.html</loc></url>
+<url><loc>/reference/fetchCondenserConceptSetData.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/Phenelope-package.html</loc></url>
+</urlset>
+

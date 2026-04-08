@@ -1,0 +1,19 @@
+Develop information for the condition. Use the following template. The portions in square brackets [] are what I want you to develop as an expert.
+
+Condition: [Name of condition mentioned above.]
+
+1. [Condition] overview: [Overview of the condition in a short paragraph.]
+
+2. Presentation for [condition]: [Create a bulleted list of signs and symptoms for the condition.]
+
+3. Assessment for [condition]: [Create a bulleted list of assessing criteria for the condition.]
+
+4. Differential diagnoses for [condition]: [Create a bulleted list of differential diagnoses for the condition.]
+
+5. Treatment plan for [condition]: [Create a bulleted list of the treatment plan for the condition.]
+
+6. Prognosis for [condition]: [Prognosis of the condition in a short paragraph.]
+
+7. References used in the assessment: [create a numbered list of references for the condition] 
+
+

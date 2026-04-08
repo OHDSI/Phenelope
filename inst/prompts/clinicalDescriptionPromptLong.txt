@@ -1,0 +1,82 @@
+INCLUDE ALL THE ~'s THAT ARE IN THE TEXT BELOW AND DO NOT EVER ADD ANY OTHER SPECIAL CHARACTERS EXCEPT AS SPECIFIED
+insert - prior to each bullet point, do not include ~ - REPEAT NEVER ADD ~ ANYWHERE
+DO NOT INSERT ANY OTHER SPECIAL CHARACTERS IN ANY LOCATION IN ANY SECTION ESPECIALLY '~', '~~', '~~~'
+
+If two or more conditions are presented, compare and contrast the conditions using the format below
+
+start with a title sentence in the format:
+~~~~[Condition name]: a comprehensive clinical description
+
+Then include all of the following sections:
+
+~~~Clinical Overview
+~~Disease Overview
+Provide an introduction, including if possible a definition from reputable scientific sources like medical textbooks, pubmed articles, medical dictionaries, or clinical guidelines in the form - ‘it is defined as.’ Assess whether there’s a consensus understanding among medical professionals, explaining your reasoning. Also provide an opinion if this condition is of special interest in pharmacovigilance and explain why. Add any relevant history or etymology of the condition to provide context.
+
+~~Drug Induced Conditions
+If the idea ‘Drug induced Condition’ is commonly used in pharmacovigilance, if possible please provide a definition for ‘Drug induced Condition’ in the form of ‘it is defined as’. Please compare the condition to ‘Drug induced Condition’. Please highlight key ideas that differentiate between the two, with special focus on what makes it ‘Drug - induced’ vs not drug induced.
+
+~~Defining Features
+List enumerate the typical signs, symptoms or defining patient features. For each item, explain their importance for medical professionals evaluating patients presenting with the given condition. Identify and highlight any of the enumerated features that are considered either characteristic or pathognomonic for this condition. Please indicate if any of these features are contraindicatives of Drug induced Condition. Add a separate special note on Drug induced Condition.
+
+~~~Etiology
+Discuss th etiology of the condition including listing important risk factors
+
+~~~Epidemiology
+Discuss in this section the prevalence and incidence rates overall and then specifically difference in incidence/prevalence between 1) males and females - don't refer to this as gender, refer to this as sex, 2) racial/ethnicity groups, e.g., Black, While, Asian, Hispanic 3) age groups, e.g. less than 65 years old and greater than 65 years old.  Also discuss trends over the last 20 years.
+
+~~~Synonyms and Subtypes
+~~Synonyms
+Please list medical terms that serve as specific synonyms for the same condition. For each term, provide context explaining the situations in which these synonyms are typically employed. Additionally, include any layman terms that describe the condition, but only if these terms are lexically or semantically distinct from the medical terms listed.
+
+~~Disease Subtypes
+Describe any subtypes, dedicating no more than two sentences to the essential characteristics of each. Add a separate special note on Drug induced Condition.
+
+~~~Management
+~~Diagnosis
+Outline the evaluation, by making a list of relevant tests. Provide examples of potential results. Explain their utility for medical assessment of patients with the given condition. Please report if any of the subtypes of the condition have a uniquely different diagnostic evaluation. Add a separate special note on Drug induced Condition.
+
+~~Treatment
+~~Current Standards
+List current treatment option(s) that are considered standard of care. These are what have been or are being offered in the last 5 years.
+
+~~Previous Standards
+List previous treatment option(s) that are no longer offered. These were offered more than 5 years ago, but are not offered anymore. Please provide a time-frame for when it was a standard.
+
+~~Treatment Evolution
+Explain how the standard of care may have evolved over time.
+
+~~Unique Treatment Plans
+Please report if any of the subtypes of the condition have a uniquely different treatment plan. Add a separate special note on Drug induced Condition.
+
+~~Prognosis
+Short Term Prognosis
+Provide the patient’s short-term clinical outcome (within 3 months post-diagnosis).
+
+~~Long Term Prognosis
+Provide the patients long-term (1 year or more) clinical outcome. Please report if any of the subtypes of the condition have a uniquely different prognosis. Add a separate special note on Drug induced Condition.
+
+~~Sequelae
+Discuss medical conditions that may result from this conditions, i.e., the sequelae of the condition
+
+~~~Differential Diagnoses; Co-occurrent, Ambiguous and Mutually Exclusive Conditions
+~~Differential Diagnosis
+List conditions that might be confused with the condition under discussion and are commonly considered a differential diagnosis. For each item, highlight the differences in mechanisms and treatment strategies, include co-occurrence information, explain the importance for a medical professional. Add a separate special note on Drug induced Condition.
+
+~~Diseases Commonly Co-occurrent
+List conditions that might co-occur in the same patient with the condition under discussion. For each item, highlight the differences in mechanisms and treatment strategies, include co-occurrence information, explain the importance for a medical professional. Add a separate special note on Drug induced Condition.
+
+~~Medical Conditions and Diseases that are Ambiguous
+Highlight clinical conditions that are confusingly similar, elucidating why they might cause confusion. Exclude subtypes of the condition under discussion here. Add a separate special note on Drug induced Condition.
+
+~~Exclusions
+List any conditions, diagnostic procedures or treatments that rule out the diagnosis of the condition under discussion. For each item, explain why ruling these out are crucial. Add a separate special note on Drug induced Condition.
+
+~~Mutually Exclusive Conditions
+Identify specific conditions or treatments that when co-occurring in the patient, make the occurrence of the condition under discussion unlikely. Explain why these are not expected to co-occur with the condition and why when this mutually exclusive condition occurs the person is less likely to have the condition. Add a separate special note on Drug induced Condition.
+
+~~~Patient Profile
+Provide one or more short case narratives of a patient with the condition for three levels of diagnostic certainty: suspected case, probable case, definite case. If possible use formats used in the field like the SOAP format. Add a separate special note on Drug induced Condition.
+
+~~~References
+Collate, deduplicate, and sort all cited references alphabetically in APA style.

@@ -1,0 +1,33 @@
+, you are a medical expert on this condition.  Develop information for the condition. Use the following template. The portions in square brackets [] are what I want you to develop as an expert.
+You may be given a list of specifically excluded conditions.  In you assessment include information on how the condition is distinguished from the excluded conditions.
+
+If the condition is 2 or more conditions separated by the word "and" or "or", answer the sections below with details that pertain to all conditions
+  requested - the union of the conditions.
+
+Condition: [Name of condition mentioned above. Include common synonyms for the condition]
+Excluded conditions: [Name of excluded conditions. Include common synonyms for the excluded condtions]
+
+1. [Condition] overview: [Overview of the condition in a short paragraph.]  Include in the description if the condition is chronic, acute, or may be either.  If the condition is acute, can it recur?
+
+If there are excluded conditions:
+[Name of excluded conditions] differences: [write a short paragraph describing the differences between the condition and the excluded conditions, else write "No excluded conditions"]
+
+2. Presentation for [condition]: [Create a bulleted list of signs and symptoms for the condition.]
+
+3. Assessment for [condition]: [Create a bulleted list of assessing criteria for the condition.]
+
+3a. Laboratory tests and measurement values for assessment of [condition]: [Create a bulleted list of laboratory tests and measurement values that can be used to diagnosis this condition including the units of measurement and range of values for this condition]
+
+4. Differential diagnoses for [condition]: (differential diagnoses are conditions that can't happen in patients with this condition) [Create a bulleted list of differential diagnoses for the condition.]
+
+5. Common comorbid conditions specifically for [condition]: [Create a bulleted list of common comorbid conditions for the condition.]
+
+6. Treatment plan for [condition]: [Create a bulleted list of the treatment plan for the condition.]
+
+7. Medications usually given in the first 24 hours (acute condition) or 30 days (chronic conditions) for [condition]: [Create a bulleted list of the medications usually given soon after diagnosis.]
+
+8. Prognosis for [condition]: [Prognosis of the condition in a short paragraph.  Include range of duration of condition and frequency/duration of follow-up medical visits]
+
+9. References used in the assessment: [create a numbered list of references for the condition]
+
+
