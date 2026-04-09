@@ -4,3 +4,9 @@
 docs
 extras
 ^\.github$
+deploy.sh
+.classpath
+.project
+compare_versions
+_pkgdown.yml
+docs

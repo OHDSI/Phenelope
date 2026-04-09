@@ -31,21 +31,22 @@ Requires R (version 4.4.0 or higher).
 
 # User Documentation
 
-1)  Documentation can be found on the [package website](https://ohdsi.github.io/Phenelope).
+1)  Documentation can be found on the [package website](https://ohdsi.github.io/Phenelope).
 2)  PDF versions of the documentation are also available:
-    -   Package manual: [CohortDiagnostics manual](https://raw.githubusercontent.com/OHDSI/CohortDiagnostics/main/extras/CohortDiagnostics.pdf)
 
-    -   Vignette: [Creating LLM Concept Sets](https://raw.githubusercontent.com/OHDSI/Phenelope/vignettes/CreatingLLMConceptSets.rmd)
+    -   Package manual: [Phenelope manual](https://raw.githubusercontent.com/OHDSI/Phenelope/main/extras/Phenelope.pdf)
+
+    -   Vignette: [Creating LLM Concept Sets](https://github.com/OHDSI/Phenelope/raw/main/inst/doc/CreatingLLMConceptSets.pdf)
 
 # Support
 
 -   Developer questions/comments/feedback: [OHDSI Forum](http://forums.ohdsi.org/c/developers)
 
--   We use the [GitHub issue tracker](https://github.com/OHDSI/CohortDiagnostics/issues) for all bugs/issues/enhancements
+-   We use the [GitHub issue tracker](https://github.com/OHDSI/Phenelope/issues) for all bugs/issues/enhancements
 
 # Contributing
 
-Read [here](https://ohdsi.github.io/Hades/contribute.html) how you can contribute to this package.
+Read [here](https://ohdsi.github.io/Hades/contribute.html) how you can contribute to this package.
 
 # License
 

@@ -1,5 +1,5 @@
 ---
-title: "CreatingLLMConceptSets"
+title: "Creating LLM Concept Sets"
 author: "Joel N. Swerdel"
 date: '`r Sys.Date()`'
 output:
@@ -12,7 +12,7 @@ output:
   word_document:
     toc: yes
 vignette: >
-  %\VignetteIndexEntry{Creating}
+  %\VignetteIndexEntry{Creating LLM Concept Sets}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---

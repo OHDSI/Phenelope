@@ -16,7 +16,6 @@
 
 # Format and check code --------------------------------------------------------
 styler::style_pkg()
-OhdsiRTools::checkUsagePackage("Phenelope")
 OhdsiRTools::updateCopyrightYearFolder()
 devtools::spell_check()
 
@@ -32,23 +31,3 @@ rmarkdown::render("vignettes/CreatingLLMConceptSets.rmd",
                                           number_sections = TRUE))
 
 pkgdown::build_site()
-OhdsiRTools::fixHadesLogo()
-
-# Store JAR checksum -----------------------------------------------------------
-checksum <- rJava::J("org.ohdsi.sql.JarChecksum", "computeJarChecksum")
-write(checksum, file.path("inst", "csv", "jarChecksum.txt"))
-
-# Release package --------------------------------------------------------------
-# Check if DESCRIPTION version matches POM version:
-descriptionVersion <- stringr::str_extract(readLines("DESCRIPTION")[grepl("^Version:", readLines("DESCRIPTION"))], "(?<=Version: ).*$")
-pomVersion <- stringr::str_extract(readLines("pom.xml")[grepl("SNAPSHOT</version>", readLines("pom.xml"))], "(?<=<version>).*(?=-SNAPSHOT</version>)")
-if (descriptionVersion != pomVersion) stop("DESCRIPTION version does not match POM version")
-
-revdepcheck::revdep_reset()
-revdepcheck::revdep_check(num_workers = 4)
-
-devtools::check_win_devel()
-
-rhub::rc_submit(platforms = "atlas")
-
-devtools::release()
