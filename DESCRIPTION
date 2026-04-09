@@ -1,7 +1,7 @@
 Package: Phenelope
 Type: Package
 Title: LLM-based concept set builder
-Version: 0.1.0
+Version: 0.1.1
 Author: Joel N. Swerdel
 Maintainer: Joel N. Swerdel <jswerdel@its.jnj.com>
 Description: A package that uses an LLM for building a concept set for use in cohort definitions.
