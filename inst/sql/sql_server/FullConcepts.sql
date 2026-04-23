@@ -3,7 +3,7 @@ from @cdm_database_schema.concept_ancestor ca
 join @cdm_database_schema.concept c
 on descendant_concept_id = concept_id
 where ancestor_concept_id in (@concept_list)
-  and upper(domain_id) in ('CONDITION', 'OBSERVATION', 'PROCEDURE', 'MEASUREMENT', 'VISIT', 'DRUG')
+  and upper(domain_id) in ('CONDITION', 'OBSERVATION', 'PROCEDURE', 'MEASUREMENT', 'VISIT', 'DRUG', 'PROVIDER')
   AND concept_name NOT LIKE '%finding'
   AND concept_name NOT LIKE 'Disorder of%'
   AND concept_name NOT LIKE 'Finding of%'

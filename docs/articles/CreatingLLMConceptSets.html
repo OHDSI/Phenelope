@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Phenelope</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@
                         <h4 data-toc-skip class="author">Joel N.
 Swerdel</h4>
             
-            <h4 data-toc-skip class="date">2026-04-09</h4>
+            <h4 data-toc-skip class="date">2026-04-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/OHDSI/Phenelope/blob/HEAD/vignettes/CreatingLLMConceptSets.rmd" class="external-link"><code>vignettes/CreatingLLMConceptSets.rmd</code></a></small>
       <div class="hidden name"><code>CreatingLLMConceptSets.rmd</code></div>
@@ -90,6 +90,8 @@ Swerdel</h4>
 
     
     
+<pre><code><span><span class="co">## Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
+<span><span class="co">##   object 'type_sum.accel' not found</span></span></code></pre>
 <div style="page-break-after: always;"></div>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
@@ -143,7 +145,7 @@ packages.</li>
 used in “cdmDatabaseSchema” in HADES packages)</li>
 </ol>
 <p>Below is an example for creating a database connection string:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create database connection details</span></span>
 <span><span class="va">connectionDetails</span> <span class="op">&lt;-</span> <span class="fu">DatabaseConnector</span><span class="fu">::</span><span class="fu"><a href="https://ohdsi.github.io/DatabaseConnector/reference/createConnectionDetails.html" class="external-link">createConnectionDetails</a></span><span class="op">(</span></span>
 <span>  dbms <span class="op">=</span> <span class="st">"postgresql"</span>,</span>
@@ -160,7 +162,7 @@ See, for example, the ellmer function chat_azure_openai. Required fields
 are LLM dependent, but, as an example, you may need: * endpoint *
 api_version * model * credentials</p>
 <p>For example:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create LLM client for ellmer</span></span>
 <span><span class="va">llmClient</span> <span class="op">&lt;-</span> <span class="fu">ellmer</span><span class="fu">::</span><span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_azure_openai.html" class="external-link">chat_azure_openai</a></span><span class="op">(</span></span>
 <span>  endpoint <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"/openai/deployments.*"</span>, <span class="st">""</span>, <span class="fu">keyring</span><span class="fu">::</span><span class="fu"><a href="https://keyring.r-lib.org/reference/key_get.html" class="external-link">key_get</a></span><span class="op">(</span><span class="st">"genai_gpt4o_endpoint"</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -174,7 +176,7 @@ model for best results.</p>
 <p>Once you have the necessary information, you are ready to create you
 concept set by calling the createConceptSet() function as shown
 below:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run the</span></span>
 <span><span class="va">finalSet</span> <span class="op">&lt;-</span> <span class="fu">Penelope</span><span class="fu">::</span><span class="fu">createConceptSet</span><span class="op">(</span></span>
 <span>  conceptName <span class="op">=</span> <span class="st">"Type 2 Diabetes Mellitus"</span>,</span>
@@ -272,7 +274,7 @@ minCount and belowMinimumCountApproach options are used)</li>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>

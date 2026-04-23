@@ -62,11 +62,10 @@
   message("--Finding ", type, " results for concept set")
   if (type == "phoebe") {
     recs <- .getPhoebeData(c(conceptList$conceptId))
-
     recsFinal <- recs
-    recsFinal <- recsFinal[!(recsFinal$conceptId %in% c(conceptList$conceptId)), ]
 
-    if (!is.null(recsFinal)) { # check if phoebe had any recommendations
+    if (nrow(recsFinal) != 0) { # check if phoebe had any recommendations
+      recsFinal <- recsFinal[!(recsFinal$conceptId %in% c(conceptList$conceptId)), ]
       sqlFilename <- "checkDomainsForConcepts.sql"
       sql <- SqlRender::loadRenderTranslateSql(
         sqlFilename = sqlFilename,
@@ -114,7 +113,7 @@
     recsFinal <- conceptList
   }
 
-  if (!is.null(recs)) { # no phoebe recs
+  if (nrow(recs) != 0) { # no phoebe recs
     concepts <- merge(concepts, unique(recs[, c("conceptId", "conceptName", "recordCount")]), all.x = T)
   } else { # no phoebe recs
     concepts$recordCount <- NA
@@ -289,7 +288,7 @@
     fullResults <- results
 
     if (type == "phoebe") { # only join this for phoebe results
-      if (!is.null(recsFinal)) {
+      if (nrow(recsFinal) != 0) {
         fullResults <- fullResults |>
           mutate(conceptId = as.integer(.data$conceptId)) |>
           left_join(unique(recsFinal[, c("conceptId", "recordCount")]), by = c("conceptId" = "conceptId"))
