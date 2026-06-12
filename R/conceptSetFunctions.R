@@ -364,32 +364,32 @@
 }
 
 .getPhoebeData <- function(concepts) {
-  phoebeUrlstring <- "https://hecate.pantheon-hds.com/api/concepts/%d/phoebe"
+  url <- "https://hecate.pantheon-hds.com/api/concepts/phoebe/bulk"
+  chunkSize <- 100
+  chunks <- split(as.integer(concepts), ceiling(seq_along(concepts) / chunkSize))
 
   phoebeData <- list()
-  for (conceptUp in 1:length(concepts)) {
-    cat(paste0("--Searching PHOEBE - Analyzing ", conceptUp, " of ", length(concepts), "\r"))
-    url <- sprintf(phoebeUrlstring, concepts[[conceptUp]])
-    response <- httr::GET(url)
+  for (i in seq_along(chunks)) {
+    cat(paste0("--Searching PHOEBE - Chunk ", i, " of ", length(chunks), "\r"))
+    body <- jsonlite::toJSON(list(ids = chunks[[i]]), auto_unbox = FALSE)
+    response <- httr::POST(url, body = body, httr::content_type_json())
 
-    if (httr::status_code(response) == 200) {
-      contextText <- httr::content(response, "text", encoding = "UTF-8")
-      if (contextText == "[]") {
-        data <- NULL
-      } else {
-        data <- jsonlite::fromJSON(contextText)
-        data <- data |>
-          SqlRender::snakeCaseToCamelCaseNames()
-        phoebeData[[length(phoebeData) + 1]] <- data
-      }
-    } else {
-      stop(sprintf(
-        "Error in phoebe search for concept %s: %s",
-        conceptUp,
-        httr::status_code(response)
-      ))
+    if (httr::status_code(response) != 200) {
+      stop(sprintf("Error in phoebe bulk search (chunk %d): %s", i, httr::status_code(response)))
+    }
+
+    parsed <- jsonlite::fromJSON(
+      httr::content(response, "text", encoding = "UTF-8"),
+      simplifyDataFrame = FALSE
+    )
+
+    for (entry in parsed) {
+      if (length(entry$results) == 0) next
+      df <- as.data.frame(do.call(rbind, lapply(entry$results, as.data.frame)), stringsAsFactors = FALSE)
+      phoebeData[[length(phoebeData) + 1]] <- SqlRender::snakeCaseToCamelCaseNames(df)
     }
   }
+
   phoebeData <- unique(bind_rows(phoebeData))
   phoebeData <- phoebeData[!is.na(phoebeData$conceptId),]
   return(phoebeData)
