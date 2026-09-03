@@ -42,6 +42,11 @@ Use the following specific rules to decide on your answer:
 S1) If the vast majority (> 95%) of instances of the proposed concept(s) make it a part of MAIN_CONCEPT in CLINICAL_CONTEXT, the answer is YES.
 Positive Example:  a proposed concept of "Photochemotherapy" nearly ALWAYS involves chemo AND photo therapy, so it should be included in a specific concept of "phototherapy procedure" even though it also includes chemical therapy.
 Negative Example:  a proposed concept of "Procedure on skin" DOES NOT specify phototherapy although most phototherapy involves the skin (phototherapy is NOT specified and should NOT be assumed) AND the vast majority of "Procedure on skin" ARE NOT phototherapy, so it should NOT be included in a specific concept of "phototherapy procedure".
+
+Operationalization of the >95% threshold (S1)
+- Preferred evidence (in order): authoritative ontology mapping (explicit synonym/subtype relations), clinical guideline language, large clinical corpus frequency, domain expert consensus.
+- If no authoritative evidence is available, use documented expert judgment in the rationale and set confidenceLevel = "BORDERLINE" unless the case is lexically trivial.
+
 S2) If proposed concept(s) is ALWAYS a synonym of MAIN_CONCEPT and in the clinical context, CLINICAL_CONTEXT, the answer is YES.
 S3) If proposed concept(s) is ALWAYS a subtype of MAIN_CONCEPT and in the clinical context, CLINICAL_CONTEXT, the answer is YES.
 Example:   a proposed concept of "Photodynamic therapy of skin" ALWAYS involves photo therapy, albeit a special form of it, so it should be included in a specific concept of "phototherapy procedure" even though it is a special form (using drugs in addition to light).
@@ -51,26 +56,22 @@ S6) If specific concept(s) has an OR clause, the proposed concept should be incl
 Example: For the specific concept "leukocytosis or neutrophilia condition", include any proposed concept that is correct for leukocytosis OR neutrophilia.
 S7) If specific concept(s) has an AND clause, the proposed concept should be included if it is correct for EITHER of the parts of the specific condition.
 Example: For the specific concept "nausea and vomiting condition", include any proposed concept that is correct for nausea OR vomiting.
-S8) Classify the stability of your YES/NO decision.
-S8) confidenceLevel
+S8) Classify the stability of your YES/NO decision using confidenceLevel, which are either CLEAR or BORDERLINE:
 
-CLEAR
+S8a) CLEAR
 - A knowledgeable ontologist would be highly likely to reach the same answer.
+If confidenceLevel is CLEAR:
+- Provide a BRIEF rationaleForAnswer of no more than 15 words.
+- Do not discuss competing interpretations.
 
-BORDERLINE
+S8b) BORDERLINE
 - Either:
   (a) a knowledgeable ontologist could reasonably reach the opposite answer
   OR
   (b) the wording or relationship introduces elevated risk of answer variability across runs.
-S9) Only if confidenceLevel is BORDERLINE, provide the rationaleForAnswer.
-
-If confidenceLevel is CLEAR:
-- Provide a brief rationale of no more than 15 words.
-- Do not discuss competing interpretations.
-
-If confidenceLevel is BORDERLINE:
-- Explain the strongest reason for inclusion and the strongest reason for exclusion.
-- Then provide the final determination.
+- Only if confidenceLevel is BORDERLINE, provide a FULL rationaleForAnswer consisting of the following:
+-- Explain the strongest reason for inclusion and the strongest reason for exclusion.
+-- Then provide the final determination.
 
 NOTE: there may be more than one proposed concept to evaluate.  Evaluate each one SEPARATELY and provide a complete answer for each proposed concept.
 Here is your data to analyze:

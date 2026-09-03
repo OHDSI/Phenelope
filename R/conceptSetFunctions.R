@@ -311,6 +311,7 @@
             while(!fullBucket) {
               bucketAttempt <- bucketAttempt + 1
               bucketItems <- (endPoint - startPoint) + 1
+              llmClient$set_turns(list()) # Reset the chat
               text <- llmClient$chat_structured(prompt,
                                                 echo = "none",
                                                 type = ellmer::type_array(ellmer::type_object(

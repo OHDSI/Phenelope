@@ -47,24 +47,45 @@ Use the following specific rules to decide on your answer:
 S1) If the vast majority (> 95%) of instances of the proposed concept(s) make it a part of MAIN_CONCEPT in CLINICAL_CONTEXT, the answer is YES.
 Positive Example:  a proposed concept of "Photochemotherapy" nearly ALWAYS involves chemo AND photo therapy, so it should be included in a specific concept of "phototherapy procedure" even though it also includes chemical therapy.
 Negative Example:  a proposed concept of "Procedure on skin" DOES NOT specify phototherapy although most phototherapy involves the skin (phototherapy is NOT specified and should NOT be assumed) AND the vast majority of "Procedure on skin" ARE NOT phototherapy, so it should NOT be included in a specific concept of "phototherapy procedure".
-S2) If SUGGESTED_CONCEPT_SHORT is a synonym of MAIN_CONCEPT and in the clinical context, CLINICAL_CONTEXT, the answer is YES.
-S3) If SUGGESTED_CONCEPT_SHORT is a subtype of MAIN_CONCEPT and in the clinical context, CLINICAL_CONTEXT, the answer is YES.
+
+Operationalization of the >95% threshold (S1)
+- Preferred evidence (in order): authoritative ontology mapping (explicit synonym/subtype relations), clinical guideline language, large clinical corpus frequency, domain expert consensus.
+- If no authoritative evidence is available, use documented expert judgment in the rationale and set confidenceLevel = "BORDERLINE" unless the case is lexically trivial.
+
+S2) If proposed concept(s) is ALWAYS a synonym of MAIN_CONCEPT and in the clinical context, CLINICAL_CONTEXT, the answer is YES.
+S3) If proposed concept(s) is ALWAYS a subtype of MAIN_CONCEPT and in the clinical context, CLINICAL_CONTEXT, the answer is YES.
 Example:   a proposed concept of "Photodynamic therapy of skin" ALWAYS involves photo therapy, albeit a special form of it, so it should be included in a specific concept of "phototherapy procedure" even though it is a special form (using drugs in addition to light).
-S4) If SUGGESTED_CONCEPT_SHORT is a synonym, subtype, or exclusive manifestation of any of EXCLUDED_CONCEPTS (i.e., only happens with EXCLUDED_CONCEPTS), the answer is NO.
-S5) If SUGGESTED_CONCEPT_SHORT is not possible within the clinical context, CLINICAL_CONTEXT, the answer is NO.
+S4) If proposed concept(s) is ALWAYS a synonym, subtype, or exclusive manifestation of any of EXCLUDED_CONCEPTS (i.e., only happens with EXCLUDED_CONCEPTS), the answer is NO.
+S5) If proposed concept(s) is not a part of the specific concept, MAIN_CONCEPT within the clinical context, CLINICAL_CONTEXT, the answer is NO.
 S6) If specific concept(s) has an OR clause, the proposed concept should be included if it is correct for EITHER of the parts of the specific condition.
 Example: For the specific concept "leukocytosis or neutrophilia condition", include any proposed concept that is correct for leukocytosis OR neutrophilia.
 S7) If specific concept(s) has an AND clause, the proposed concept should be included if it is correct for EITHER of the parts of the specific condition.
 Example: For the specific concept "nausea and vomiting condition", include any proposed concept that is correct for nausea OR vomiting.
+S8) Classify the stability of your YES/NO decision using confidenceLevel, which are either CLEAR or BORDERLINE:
+
+S8a) CLEAR
+- A knowledgeable ontologist would be highly likely to reach the same answer.
+If confidenceLevel is CLEAR:
+- Provide a BRIEF rationaleForAnswer of no more than 15 words.
+- Do not discuss competing interpretations.
+
+S8b) BORDERLINE
+- Either:
+  (a) a knowledgeable ontologist could reasonably reach the opposite answer
+  OR
+  (b) the wording or relationship introduces elevated risk of answer variability across runs.
+- Only if confidenceLevel is BORDERLINE, provide a FULL rationaleForAnswer consisting of the following:
+-- Explain the strongest reason for inclusion and the strongest reason for exclusion.
+-- Then provide the final determination.
 
 Give a JSON-structured summary for the following (DO NOT ADD ANY OTHER NON-JSON FORMATTED TEXT):
-{
-    "conceptId": "proposed concept Id (conceptId from above)",
-    "suggestedConcept": "proposed concept name (conceptSetTarget from above)",
+  {
+    "conceptId": "proposed concept Id",
+    "suggestedConcept": "proposed concept name",
     "excludedConcepts": "Create a comma separated string of the excluded concepts.",
-    "proposedInExcluded": "Is SUGGESTED_CONCEPT_SHORT in the excluded concepts (EXCLUDED_CONCEPTS)? (YES or NO)",
-    "finalAnswer": "Do the vast majority (> 95%) of instances of SUGGESTED_CONCEPT_SHORT make it a part of MAIN_CONCEPT in the current clinical context (CLINICAL_CONTEXT)? [IMPORTANT Answer ONLY as: 'YES', 'NO' (DO NOT REPEAT THE QUESTION IN YOUR ANSWER!)]",
-    "rationaleForAnswer": "Provide a rationale for your answer (should include always or almost always)",
-    "confidenceLevel": "What is your confidence level for your answer? [Only answer as: 0% - 100%]"
+    "proposedInExcluded": "Is proposed concept in the excluded concepts (EXCLUDED_CONCEPTS)? (YES or NO)",
+    "finalAnswer": "Do the vast majority (> 95%) of instances of the proposed concept make it a part of MAIN_CONCEPT in the current clinical context (CLINICAL_CONTEXT)? [IMPORTANT Answer ONLY as: 'YES', 'NO' (DO NOT REPEAT THE QUESTION IN YOUR ANSWER!)]",
+    "rationaleForAnswer": "Provide a rationale for your answer INCLUDING the rule above that was satisfied",
+    "confidenceLevel": "CLEAR or BORDERLINE"
 
-}
+  }

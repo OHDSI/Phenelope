@@ -42,6 +42,11 @@ Use the following specific rules to decide on your answer (YES means they are SH
 S1) If the vast majority (> 50%) of instances of the proposed concept(s) make it a part of MAIN_CONCEPT in CLINICAL_CONTEXT, the answer is YES.
 Positive Example:  a proposed concept of "Photochemotherapy" nearly ALWAYS involves chemo AND photo therapy, so it should be included in a specific concept of "phototherapy procedure" even though it also includes chemical therapy.
 Negative Example:  a proposed concept of "Procedure on skin" DOES NOT specify phototherapy although most phototherapy involves the skin (phototherapy is NOT specified and should NOT be assumed) AND the vast majority of "Procedure on skin" ARE NOT phototherapy, so it should NOT be included in a specific concept of "phototherapy procedure".
+
+Operationalization of the >50% threshold (S1)
+- Preferred evidence (in order): authoritative ontology mapping (explicit synonym/subtype relations), clinical guideline language, large clinical corpus frequency, domain expert consensus.
+- If no authoritative evidence is available, use documented expert judgment in the rationale and set confidenceLevel = "BORDERLINE" unless the case is lexically trivial.
+
 S2) If proposed concept(s) is ALWAYS a synonym of MAIN_CONCEPT and in the clinical context, CLINICAL_CONTEXT, the answer is YES.
 S3) If proposed concept(s) is ALWAYS a subtype of MAIN_CONCEPT and in the clinical context, CLINICAL_CONTEXT, the answer is YES.
 Example:   a proposed concept of "Photodynamic therapy of skin" ALWAYS involves photo therapy, albeit a special form of it, so it should be included in a specific concept of "phototherapy procedure" even though it is a special form (using drugs in addition to light).
