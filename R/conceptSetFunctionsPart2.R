@@ -32,6 +32,7 @@
                                     conditionForFiles,
                                     tryNumber,
                                     phoebeExclusions = phoebeExclusions,
+                                    phoebeRepository,
                                     quickRun = FALSE) {
   message("Testing concepts and descendants. ")
 
@@ -66,6 +67,7 @@
       domain = domain,
       phoebeExclusions = phoebeExclusions,
       bucketSize = bucketSize,
+      phoebeRepository = phoebeRepository,
       conditionForFiles = conditionForFiles,
       outputDirectory = outputDirectory
     )
@@ -117,6 +119,7 @@
     excludedVocabularies = c(excludedVocabularies),
     domain = domain,
     bucketSize = bucketSize,
+    phoebeRepository = phoebeRepository,
     conditionForFiles = conditionForFiles,
     outputDirectory = outputDirectory
   )
@@ -144,6 +147,7 @@
                                tryNumber,
                                conditionForFiles,
                                phoebeExclusions = c(),
+                               phoebeRepository,
                                bucketSize = 20) {
   if(!is.null(getOption("databaseConnectorInteger64AsNumeric"))) {
     if(!getOption("databaseConnectorInteger64AsNumeric")) { #if set to false, change to true and put back at the end
@@ -200,6 +204,7 @@
                                                conditionForFiles = conditionForFiles,
                                                tryNumber = tryNumber,
                                                phoebeExclusions = phoebeExclusions,
+                                               phoebeRepository = phoebeRepository,
                                                quickRun = FALSE)
 
   } else { #too large to test - send message and use descendants only
@@ -519,9 +524,15 @@ WHERE concept_id IN (@concept_ids)
                           outputDirectory,
                           phoebeExclusions,
                           standardOnly,
-                          bucketSize) {
+                          bucketSize,
+                          phoebeRepository) {
 
-  hecateSearchString <- getClinicalSynonyms(searchString)$synonymousBucketNames
+  results <- getClinicalSynonyms(searchString)
+  if(!is.null(results)) {
+    hecateSearchString <- results$synonymousBucketNames
+  } else {
+    hecateSearchString <- searchString
+  }
 
   if (file.exists(file.path(outputDirectory, paste0(conditionForFiles,
                                                     "_from_embVectors.csv")))) {
@@ -544,10 +555,10 @@ WHERE concept_id IN (@concept_ids)
       message(paste0("Searching Hecate for the following: ", hecateSearchString))
 
       seeds <- getHecateSearchList(hecateSearchString,
-                                      domains = domains,
-                                      conceptClasses = classes,
-                                      vectorSearchSize = vectorSearchSize,
-                                      standardOnly = standardOnly)
+                                   domains = domains,
+                                   conceptClasses = classes,
+                                   vectorSearchSize = vectorSearchSize,
+                                   standardOnly = standardOnly)
 
       seeds <- seeds[!duplicated(seeds$conceptName), ]
 
@@ -609,6 +620,7 @@ WHERE concept_id IN (@concept_ids)
                                      tryNumber = tryNumber,
                                      outputDirectory = outputDirectory,
                                      phoebeExclusions = phoebeExclusions,
+                                     phoebeRepository = phoebeRepository,
                                      bucketSize = bucketSize)
   } else {
     message("There are no viable concept candidates for this concept set.")
@@ -1130,7 +1142,11 @@ getClinicalSynonyms <- function(concept) {
                       systemPrompt = systemPrompt,
                       ellmerTypeObject = ellmerTypeObject)
 
-  return(results)
+  if(nrow(results) > 0) {
+    return(results)
+  } else {
+    return(NULL)
+  }
 }
 
 getHecateSearchList <- function(hecateSearchString,

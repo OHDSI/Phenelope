@@ -32,6 +32,7 @@
                                                       domain,
                                                       phoebeExclusions = phoebeExclusions,
                                                       bucketSize,
+                                                      phoebeRepository,
                                                       conditionForFiles,
                                                       outputDirectory) {
   if (type == "phoebe") {
@@ -78,7 +79,10 @@
   message("--Finding ", type, " results for concept set")
   if (type == "phoebe") {
     # recs <- .getPhoebeData(c(conceptList$conceptId))
-    recs <- .getAnyPhoebeData(c(conceptList$conceptId))
+    recs <- .getAnyPhoebeData(c(conceptList$conceptId),
+                              phoebeRepository = phoebeRepository,
+                              connectionDetails = connectionDetails,
+                              cdmDatabaseSchema = cdmDatabaseSchema)
 
     if(!is.null(recs)) {
       if(nrow(recs) != 0) {
@@ -139,7 +143,10 @@
     }
   } else { # else test against included concepts
     if(minCount > 0) { #need to get record count as it is used to determine eligible concepts
-      recs <- .getAnyPhoebeData(c(conceptList$conceptId)) # get phoebe data on this pass solely for the record counts
+      recs <- .getAnyPhoebeData(c(conceptList$conceptId),
+                                phoebeRepository = phoebeRepository,
+                                connectionDetails = connectionDetails,
+                                cdmDatabaseSchema = cdmDatabaseSchema) # get phoebe data on this pass solely for the record counts
     } else { #don't need to get record counts on this pass as it won't be used to determine eligible concepts
       recs <- data.frame() #set to empty df
     }
@@ -170,7 +177,7 @@
     message("--skipping previously analyzed concepts yields: ", nrow(concepts))
   }
 
-  if (nrow(concepts) > 500) { #for large sets
+  if (nrow(concepts) > 1000 & type == "phoebe") { #for large sets
     #remove the clearly "no" concepts
     message("\n--Removing concepts that clearly do not belong...")
     updatedConcepts <- removeClearNo(query = query,
@@ -184,7 +191,7 @@
     message(paste0("--", nrow(concepts), " concepts remain to be fully tested.\n"))
 
     # save to dataframe as a csv
-    if(nrow(updatedConcepts) > 0) {
+    if(length(c(updatedConcepts$conceptId)) > 0) {
       utils::write.csv(updatedConcepts, file.path(outputDirectory, paste0(conditionForFiles, "_removedConcepts_", type, ".csv")), row.names = F)
     }
   }
@@ -469,13 +476,22 @@
   }
 }
 
-.getAnyPhoebeData <- function(concepts) { #depends on the length of the concept list
-  if(length(concepts) == 1) {
-    phoebeData <- .getPhoebeData(concepts)
-  } else if(length(concepts) > 1) {
-    phoebeData <- .getPhoebeDataBulk(concepts)
-  } else {
-    phoebeData <- NULL
+.getAnyPhoebeData <- function(concepts,
+                              phoebeRepository,
+                              connectionDetails,
+                              cdmDatabaseSchema) { #depends on the length of the concept list
+  if(phoebeRepository == "HECATE") { #get phoebe data from hecate repo
+    if(length(concepts) == 1) {
+      phoebeData <- .getPhoebeData(concepts)
+    } else if(length(concepts) > 1) {
+      phoebeData <- .getPhoebeDataBulk(concepts)
+    } else {
+      phoebeData <- NULL
+    }
+  } else { #get phoebe data from database table
+    phoebeData <- .getPhoebeDataFromDatabase(concepts,
+                                             connectionDetails,
+                                             cdmDatabaseSchema)
   }
 
   phoebeData$conceptSetTarget <- phoebeData$conceptName
@@ -565,6 +581,13 @@
     phoebeData <- phoebeData[!is.na(phoebeData$conceptId),]
   }
   cat("\n")
+  return(phoebeData)
+}
+
+.getPhoebeDataFromDatabase <- function(concepts,
+                                       connectionDetails,
+                                       cdmDatabaseSchema) {
+
   return(phoebeData)
 }
 

@@ -54,6 +54,7 @@
 #' @param excludedVocabularies      Vocabularies not to be included in the condensing function
 #' @param condenseConceptSet      True/False to perform condenser function
 #' @param bucketSize          Number of concepts for LLM to analyze in one pass - Note: larger number may reduce accuracy of evaluation
+#' @param phoebeRepository    Location of the phoebe repository - either HECATE or DATABASE
 #' @param standardOnly        T/F - if true, only allow standard concepts, if false, any concepts
 #' @param quickRun    T/F - if true, will simply test the concepts in the concept list, i.e., no PHOEBE, descendants
 #' @return Final results set as a list of two elements 1) a data frame of the LLM results for each tested concept
@@ -77,6 +78,7 @@ createConceptSet <- function(conceptSetTarget,
                              condenseConceptSet = TRUE,
                              clinicalContext = "any clinical context",
                              bucketSize = 20,
+                             phoebeRepository = "HECATE",
                              standardOnly = TRUE,
                              quickRun = FALSE) {
   errorMessages <- checkmate::makeAssertCollection()
@@ -103,14 +105,19 @@ createConceptSet <- function(conceptSetTarget,
                             "EXCLUDE ALL",
                             "INCLUDE ALL"
                           ),
-                          add = errorMessages
-  )
+                          add = errorMessages)
   checkmate::assertCharacter(outputDirectory, len = 1, add = errorMessages)
   checkmate::assertCharacter(clinicalDefinition, len = 1, null.ok = TRUE, add = errorMessages)
   checkmate::assertCharacter(clinicalContext, len = 1, null.ok = TRUE, add = errorMessages)
   checkmate::assertCharacter(clinicalContext, len = 1, null.ok = TRUE, add = errorMessages)
   checkmate::assertLogical(condenseConceptSet, add = errorMessages)
   checkmate::assertNumeric(bucketSize, add = errorMessages)
+  checkmate::assertChoice(phoebeRepository,
+                          choices = c(
+                            "HECATE",
+                            "DATABASE"
+                          ),
+                          add = errorMessages)
   checkmate::assertLogical(standardOnly, add = errorMessages)
   checkmate::assertLogical(quickRun, add = errorMessages)
 
@@ -267,7 +274,8 @@ createConceptSet <- function(conceptSetTarget,
                                     outputDirectory = outputDirectory,
                                     phoebeExclusions = phoebeExclusions,
                                     standardOnly = standardOnly,
-                                    bucketSize = bucketSize)
+                                    bucketSize = bucketSize,
+                                    phoebeRepository = phoebeRepository)
 
       }
 
