@@ -1,0 +1,6 @@
+Determine what domain category, DRUG, CONDITION, PROCEDURE, MEASUREMENT, VISIT, or DEVICE, the following term belongs to: %name%
+
+Output JSON only, using the following format:
+{
+  "domain": "Domain name"
+}

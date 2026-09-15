@@ -2,7 +2,7 @@
 
 # Introduction
 
-The goal of Phenelope is to provide a tool for OMOP users to create a concept set. Requires access to an OMOP CDM and to a Large Language Model (LLM) with API access.
+Phenelope aims to create concept sets by using large language models (LLMs). In addition to an LLM, it requires access to a database holding the OHDSI Vocabulary tables.
 
 # Process Steps
 

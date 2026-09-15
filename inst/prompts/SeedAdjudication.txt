@@ -1,0 +1,5 @@
+Target Term: %name%
+
+Clinical Definition: %definition%
+
+Candidate Concepts: %concepts%

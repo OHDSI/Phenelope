@@ -1,7 +1,7 @@
 Package: Phenelope
 Type: Package
 Title: LLM-based concept set builder
-Version: 0.1.3
+Version: 0.2.0
 Author: Joel N. Swerdel
 Maintainer: Joel N. Swerdel <jswerdel@its.jnj.com>
 Description: A package that uses an LLM for building a concept set for use in cohort definitions.
@@ -13,37 +13,28 @@ Imports:
     dplyr (>= 1.1.4),
     DatabaseConnector (>= 6.3.0),
     httr,
-    readr,
     rJava,
     Capr (>= 2.0.9),
-    officer,
-    tidyr,
     jsonlite,
     ellmer,
     SqlRender,
     rlang,
     CirceR,
-    checkmate
+    checkmate,
+    R6,
+    readr
 Suggests:
     knitr,
     rmarkdown,
-    shiny,
-    shinydashboard,
-    DT,
-    htmltools,
-    qpdf,
     testthat,
-    Eunomia,
-    CohortGenerator,
     withr,
     keyring,
-    R6
+    Eunomia
 Remotes:
-    ohdsi/ROhdsiWebApi,
     ohdsi/Capr,
-    ohdsi/CirceR,
-    ohdsi/CohortGenerator
+    ohdsi/CirceR
 URL: https://ohdsi.github.io/Phenelope, https://github.com/OHDSI/Phenelope
 BugReports: https://github.com/OHDSI/Phenelope/issues
 Encoding: UTF-8
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0
+Roxygen: list(markdown = TRUE)

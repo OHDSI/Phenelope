@@ -10,3 +10,6 @@ deploy.sh
 compare_versions
 _pkgdown.yml
 docs
+^\.posit/assistant$
+man-roxygen
+^cache
