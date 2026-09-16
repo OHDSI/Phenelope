@@ -30,6 +30,9 @@ targetClinicalDefinition <- "Acute hepatic impairment is a clinical state charac
 targetName <- "Age-related macular degeneration"
 targetClinicalDefinition <- "Age-related macular degeneration (AMD) is a chronic, progressive, idiopathic degenerative disease of the central retina arising from age-driven deterioration of the retinal pigment epithelium, Bruch's membrane, and choriocapillaris, leading to dysfunction and loss of macular photoreceptors. The phenotype encompasses both the non-neovascular (dry/atrophic) form â€” characterized by drusen accumulation, retinal pigment epithelium atrophy, and in advanced cases geographic atrophy â€” and the neovascular (wet) form, characterized by pathological choroidal neovascularization through a disrupted Bruch's membrane, resulting in subretinal or intraretinal fluid, exudation, or hemorrhage. The definition spans the full disease continuum from early AMD (small to medium drusen, no visual impairment) through intermediate AMD (large drusen and/or pigmentary abnormalities) to late AMD (geographic atrophy or active neovascular disease). This phenotype is strictly restricted to idiopathic, age-driven pathophysiology and explicitly excludes inherited macular dystrophies (including Stargardt disease, Best vitelliform dystrophy, and other genetically determined retinal degenerations), as well as macular pathology secondary to a primary systemic or ocular condition such as diabetic macular edema, macular edema from retinal vein occlusion, or uveitis-associated macular disease."
 
+targetName <- "Hypertriglyceridaemia associated acute pancreatitis"
+targetClinicalDefinition <- "Hypertriglyceridaemia associated acute pancreatitis is an acute inflammatory condition of the pancreas in which markedly elevated serum triglycerides, at a concentration of 1,000 mg/dL (11.3 mmol/L) or greater measured at or near the time of the acute event, serve as the primary causative mechanism of acinar cell injury, mediated through the toxic effects of free fatty acids liberated from triglyceride-rich lipoproteins within the pancreatic microcirculation. The phenotype encompasses all cases meeting this triglyceride threshold irrespective of the underlying aetiology of the hypertriglyceridaemia itself, including both primary genetic disorders of lipid metabolism (such as familial hypertriglyceridaemia or lipoprotein lipase deficiency) and secondary causes (such as poorly controlled diabetes mellitus, hypothyroidism, obesity, or lipid-altering medications). Cases in which a biliary aetiology â€” including cholelithiasis or biliary obstruction â€” or significant alcohol use is identified as a concurrent precipitating cause of the pancreatitis episode are excluded, as these represent distinct pathophysiological pathways that preclude unambiguous attribution of the acute event to hypertriglyceridaemia alone."
+cacheFolder <- "cacheHaap"
 
 # debugonce(createConceptSet)
 conceptSet <- createConceptSet(
@@ -39,7 +42,7 @@ conceptSet <- createConceptSet(
   connectionDetails = cd,
   vocabDatabaseSchema = cdmDatabaseSchema,
   tempEmulationSchema = emulationSchema,
-  cacheFolder = "cacheAgeRelatedMacularDegeneration"
+  cacheFolder = cacheFolder
 )
 writeLines(conceptSet)
 

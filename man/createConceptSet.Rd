@@ -55,5 +55,18 @@ the user has write access.}
 A concept set expression
 }
 \description{
-Create a concept set
+Follows the following flow:
+\enumerate{
+\item Determine the domain of the input, and retrieves corresponding concept filters and settings.
+\item If no seed concept IDs are provided, run the seed concept finder to find seed concepts.
+\item Run the concept recommender to get recommended concepts.
+\item Use the concept adjucator to adjudicate whether concepts belong to the concept set or not.
+\item Convert the approved concepts to a concept set expression. If \code{condenseConceptSet = TRUE}, a parsimoneous
+representation will be generated.
+}
+
+Steps 3 and 4 are executed twice.
+
+#' Throws an error of class \code{NoApprovedConceptsError} if none of the recommended concepts are approved during
+adjudiction.
 }

@@ -19,6 +19,8 @@ Find seed concepts
 \subsection{\code{SeedConceptFinder$findSeedConcepts()}}{
   Return seed concepts given a concept set name and optionally a clinical definition.
 The \code{llmClient} is only used when \code{addSynonyms} and/or \code{adjudicateFuzzySearchResults} is \code{TRUE} in the arguments.
+
+Throws an error of class \code{NoSeedConceptsError} when no seed concepts are found.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{SeedConceptFinder$findSeedConcepts(

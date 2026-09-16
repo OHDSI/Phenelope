@@ -33,6 +33,21 @@
 #' @param conceptAdjudicator        An object of class `ConceptAdjudicator` for adjudicating recommended concepts.
 #' @param condenseConceptSet        Condense the resulting concept set?
 #'
+#' @description
+#' Follows the following flow:
+#'
+#' 1. Determine the domain of the input, and retrieves corresponding concept filters and settings.
+#' 2. If no seed concept IDs are provided, run the seed concept finder to find seed concepts.
+#' 3. Run the concept recommender to get recommended concepts.
+#' 4. Use the concept adjucator to adjudicate whether concepts belong to the concept set or not.
+#' 5. Convert the approved concepts to a concept set expression. If `condenseConceptSet = TRUE`, a parsimoneous
+#' representation will be generated.
+#'
+#' Steps 3 and 4 are executed twice.
+#'
+#' Throws an error of class `NoApprovedConceptsError` if none of the recommended concepts are approved during
+#' adjudiction.
+#'
 #' @returns
 #' A concept set expression
 #'
@@ -127,7 +142,7 @@ createConceptSet <- function(
         pull(.data$conceptId)
     } else {
       conceptIds <- concepts |>
-        filter(.data$status %in% c("APPROVED")) |>
+        filter(.data$status == "APPROVED") |>
         pull(.data$conceptId)
     }
     recommendedConcepts <- withCache({
@@ -164,6 +179,18 @@ createConceptSet <- function(
     concepts <- concepts |>
       filter(!.data$conceptId %in% adjudicatedConcepts$conceptId) |>
       bind_rows(adjudicatedConcepts)
+
+    approvedCount <- concepts |>
+      filter(.data$status == "APPROVED") |>
+      count() |>
+      pull()
+    if (approvedCount == 0) {
+      error <- errorCondition(
+        message = "No concepts were approved in adjudication. Broaden either the set of seed concepts or the clinical definition",
+        class = "NoApprovedConceptsError"
+      )
+      stop(error)
+    }
   }
 
   # Convert to (condensed) concept set expression ----------------------------------------------------------------------

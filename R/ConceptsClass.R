@@ -76,6 +76,21 @@ asConcepts <- function(dataFrame, origin = NULL, status = NULL) {
   return(dataFrame)
 }
 
+getEmptyConcepts <- function() {
+  concepts <- tibble(
+    conceptId = NA_integer_,
+    conceptName = NA_character_,
+    vocabularyId =NA_character_,
+    domainId = NA_character_,
+    conceptClassId = NA_character_,
+    origin = NA_character_,
+    status = NA_character_
+  ) |>
+    filter(.data$conceptId == 1)
+  concepts <- asConcepts(concepts)
+  return(concepts)
+}
+
 #' Validate a Concepts object
 #'
 #' @param concepts An object of type 'Concepts'.

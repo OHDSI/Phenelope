@@ -33,6 +33,8 @@ SeedConceptFinder <- R6::R6Class(
     #' Return seed concepts given a concept set name and optionally a clinical definition.
     #' The `llmClient` is only used when `addSynonyms` and/or `adjudicateFuzzySearchResults` is `TRUE` in the arguments.
     #'
+    #' Throws an error of class `NoSeedConceptsError` when no seed concepts are found.
+    #'
     #' @returns
     #' Returns an object of type Concepts with the seed concepts.
     #'
@@ -127,13 +129,26 @@ DefaultSeedConceptFinder <- R6::R6Class(
         slice_head(n = private$maxN)
       message("  - Found ", nrow(seedConcepts), " seed concepts through fuzzy vocab search")
 
+      if (nrow(seedConcepts) == 0) {
+        error <- errorCondition(
+          message = "No seed concepts found",
+          class = "NoSeedConceptsError"
+        )
+        stop(error)
+      }
+
       if (private$adjudicateFuzzySearchResults) {
         message("  Adjudicating fuzzy vocab search results")
-        seedConcepts = adjudicateSeedConcepts(seedConcepts,
-                                              name = name,
-                                              clinicalDefinition = clinicalDefinition,
-                                              llmClient = llmClient,
-                                              costTracker = costTracker)
+        adjudicatedSeedConcepts = adjudicateSeedConcepts(seedConcepts,
+                                                         name = name,
+                                                         clinicalDefinition = clinicalDefinition,
+                                                         llmClient = llmClient,
+                                                         costTracker = costTracker)
+        if (nrow(adjudicatedSeedConcepts) == 0) {
+          message("  Fuzzy vocab search result adjudiction removed all seed concepts. Undoing adjudication.")
+        } else {
+          seedConcepts <- adjudicatedSeedConcepts
+        }
         message("  - Kept ", nrow(seedConcepts), " seed concepts")
       }
 
