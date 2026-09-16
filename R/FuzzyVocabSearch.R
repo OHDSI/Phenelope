@@ -22,11 +22,31 @@ searchConcepts = function(term, domainSettings, excludedVocabularyIds, maxN = 10
       excludedVocabularyIds = excludedVocabularyIds,
       maxN = maxN
     )
+    if (nrow(searchResults) == 0) {
+      searchResults <- getEmptySearchResult()
+    }
   } else {
     stop("Unknown fuzzyVocabSearchType: ", fuzzyVocabSearchType)
   }
   return(searchResults)
 
+}
+
+getEmptySearchResult <- function() {
+  result <- tibble(
+    conceptId = NA_integer_,
+    conceptName = NA_character_,
+    domainId = NA_character_,
+    vocabularyId = NA_character_,
+    conceptClassId = NA_character_,
+    standardConcept = NA_character_,
+    conceptCode = NA_character_,
+    invalidReason = NA_character_,
+    validStartDate = NA_character_,
+    validEndDate = NA_character_,
+    recordCount = NA_integer_
+  ) |>
+    filter(.data$conceptId == 1)
 }
 
 searchConceptsHecate = function(term, domainSettings, excludedVocabularyIds, maxN = 10) {

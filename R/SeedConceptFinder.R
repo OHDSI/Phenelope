@@ -184,6 +184,10 @@ mergeRankings <- function(searchResults) {
     ) |>
     arrange(desc(.data$totalScore), .data$avgerageRank) |>
     select("conceptId", "conceptName", "vocabularyId","domainId", "conceptClassId")
+  # Avoiding weird edge case where Hecate returns two concepts with the same concept ID and concept code, but different
+  # name and concept classes (42573825 apears as 'Acute hepatopathy' and 'Acute liver disease'):
+  overallRanking <- overallRanking |>
+    filter(!duplicated(.data$conceptId))
   return(overallRanking)
 }
 
