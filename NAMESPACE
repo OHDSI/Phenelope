@@ -16,10 +16,8 @@ import(DatabaseConnector)
 import(R6)
 import(dplyr)
 import(ellmer)
-importFrom(Capr,
-  as.json,
-  cs,
-  getConceptSetDetails
-)
+importFrom(Capr,as.json)
+importFrom(Capr,cs)
+importFrom(Capr,getConceptSetDetails)
 importFrom(rlang,.data)
 importFrom(utils,write.csv)
