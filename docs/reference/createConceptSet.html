@@ -64,7 +64,7 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">createConceptSet</span><span class="op">(</span></span>
-<span>  <span class="va">conceptName</span>,</span>
+<span>  <span class="va">conceptSetTarget</span>,</span>
 <span>  <span class="va">originalConceptList</span>,</span>
 <span>  excludedConditions <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span>  <span class="va">llmClient</span>,</span>
@@ -76,7 +76,7 @@
 <span>  <span class="va">outputDirectory</span>,</span>
 <span>  tries <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  successes <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  additionalInformation <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  clinicalDefinition <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  excludedVocabularies <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ICDO3"</span><span class="op">)</span>,</span>
 <span>  condenseConceptSet <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  clinicalContext <span class="op">=</span> <span class="st">""</span></span>
@@ -87,7 +87,7 @@
     <h2>Arguments</h2>
 
 
-<dl><dt id="arg-conceptname">conceptName<a class="anchor" aria-label="anchor" href="#arg-conceptname"></a></dt>
+<dl><dt id="arg-conceptSetTarget">conceptSetTarget<a class="anchor" aria-label="anchor" href="#arg-conceptSetTarget"></a></dt>
 <dd><p>Character. Name of the concept pointing to the clinical condition.</p></dd>
 
 
@@ -147,7 +147,7 @@ consensus vote from multiple LLM iterations.</p></dd>
 get a consensus vote from multiple LLM iterations.</p></dd>
 
 
-<dt id="arg-additionalinformation">additionalInformation<a class="anchor" aria-label="anchor" href="#arg-additionalinformation"></a></dt>
+<dt id="arg-clinicalDefinition">clinicalDefinition<a class="anchor" aria-label="anchor" href="#arg-clinicalDefinition"></a></dt>
 <dd><p>Character. Additional information for concept development.  This may include any specific details that
 are desired for the concepts, for example, "only in women"</p></dd>
 

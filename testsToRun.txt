@@ -1,0 +1,9 @@
+testing
+1) condition concept set (hellp) - done
+2) drug bipolar - done
+3) drug with mid failure and recovery on second pass - done
+4) measurements - done
+5) non-drug - multiple tries  - done
+6) procedures - bilateral mastectomy - added rules about ambigous action words such as excision - done
+  NOTE: condenser function may be missing stuff - re-try "Insertion or replacement of coronary artery stent"
+7) visits - added in a note in prompt to included places in visits  - done

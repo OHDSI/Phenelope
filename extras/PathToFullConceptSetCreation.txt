@@ -1,0 +1,25 @@
+Path for all domains except drugs (and quick run):
+1) createConceptSet (createConceptSetV2.R) calls .grabConcepts (conceptSetFunctionsPart2.R)
+  - determines the domains for the passed concept set name
+  - manages what the next steps do depending on the domain (or whether a quick run is requested)
+- if any domain other than drug is requested, does as follows:
+2) .grabConcepts calls .getFullConceptSet (conceptSetFunctionsPart2.R)
+  - gets hecate search string or uses provided concept id
+  - tests what hecate returns - .createRecommendListFromConcepts (quickRun.R)
+3) .getFullConceptSet calls .fullConceptSetCreation (conceptSetFunctionsPart2.R)
+  - does 5000 record check - either passes to .fullConceptSetCreation or creates descendant only concept set and closes out
+4) .fullConceptSetCreation calls .createRecommendListViaLlmFromConceptList (conceptSetFunctions.R)
+  - once for included concepts, descendants, and phoebe inclusions
+  - once for final descendant check
+
+Path for drugs from createConceptSet (createConceptSetV2.R)
+1) createConceptSet calls .getDrugConceptSet (conceptSetFunctionsPart2.R)
+  - if drug domain found for the concept set name, manages the drug concept set creation process
+2) .getDrugConceptSet
+  - get drug class (getDrugClass)
+  - calls llm to get possible drugs included
+  - calls .vectorSearch (conceptSetFunctionsPart2.R) to find concepts for drugs found
+  - calls .createRecommendListFromConcepts (quickRun.R) to adjudicate final list
+
+Path for quick run
+1) createConceptSet (createConceptSetV2.R) calls .createRecommendListFromConcepts (quickRun.R)
