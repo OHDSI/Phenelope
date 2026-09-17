@@ -67,6 +67,6 @@ representation will be generated.
 
 Steps 3 and 4 are executed twice.
 
-#' Throws an error of class \code{NoApprovedConceptsError} if none of the recommended concepts are approved during
+Throws an error of class \code{NoApprovedConceptsError} if none of the recommended concepts are approved during
 adjudiction.
 }

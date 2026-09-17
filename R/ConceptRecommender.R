@@ -194,6 +194,9 @@ getHecatePhoebeRecommendationsBulk <- function(conceptIds) {
       } else {
         data <- jsonlite::fromJSON(contentText)
         data <- bind_rows(data$results)
+        if (nrow(data) == 0) {
+          data <- createEmptyPhoebeData()
+        }
         phoebeData[[length(phoebeData) + 1]] <- data
       }
     } else {
