@@ -63,7 +63,9 @@ remove concepts that are obviously wrong?}
   llmClient = NULL,
   costTracker = NULL,
   domainSettings = NULL,
-  excludedVocabularyIds = NULL
+  excludedVocabularyIds = NULL,
+  connection = NULL,
+  vocabDatabaseSchema = NULL
 )}
     \if{html}{\out{</div>}}
   }
@@ -77,6 +79,8 @@ remove concepts that are obviously wrong?}
       \item{\code{costTracker}}{An environment with an \code{amount} variable for keeping track of the total LLM costs.}
       \item{\code{domainSettings}}{An object of type \code{DomainSettings} as created by \code{getDomainSettings()}.}
       \item{\code{excludedVocabularyIds}}{Character vector of OHDSI Vocabulary names to exclude.}
+      \item{\code{connection}}{An open connection to a database server, as created by \code{DatabaseConnector::connect()}.}
+      \item{\code{vocabDatabaseSchema}}{The database and or schema where the OHDSI Vocabulary tables are loaded.}
     }
     \if{html}{\out{</div>}}
   }

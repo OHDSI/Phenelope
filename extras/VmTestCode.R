@@ -49,6 +49,13 @@ seedConceptId <- 376713
 targetClinicalDefinition <- "Cerebral hemorrhage is an acute or subacute pathological accumulation of blood within the brain parenchyma and/or ventricular system caused by rupture of intracerebral or intraventricular blood vessels. It encompasses both primary (e.g., hypertensive, amyloid-related) and secondary (e.g., vascular malformation, tumor, coagulopathy, hemorrhagic transformation of ischemic tissue) non-traumatic intracerebral and intraventricular bleeds that produce mass effect, tissue destruction, or neurotoxic sequelae and are typically confirmed by neuroimaging or neuropathology. The term excludes hemorrhage confined to the epidural, subdural, or subarachnoid spaces, isolated microhemorrhages or petechial hemorrhages without space-occupying effect, and hemorrhages resulting directly from penetrating or blunt head trauma. Clinically, cerebral hemorrhage is characterized by sudden focal or global neurological deficits, impaired consciousness, or signs of increased intracranial pressure, and constitutes a subtype of hemorrhagic stroke distinct from other intracranial bleeding syndromes."
 cacheFolder <- "cacheCerebralHemorrhage"
 
+targetName <- "Non-arteritic Anterior Ischemic Optic Neuropathy"
+seedConceptId <- NULL
+targetClinicalDefinition <- "Non-arteritic Anterior Ischemic Optic Neuropathy (NAION) is an acute ischemic injury to the anterior segment of the optic nerve, arising from interruption of perfusion through the short posterior ciliary arteries supplying the optic nerve head, in the absence of a vasculitic etiology such as giant cell arteritis. It presents as a sudden-onset, unilateral visual disturbance ranging across the full severity spectrum â€” from a mild, sectoral or altitudinal visual field defect to severe reduction in visual acuity â€” accompanied by optic disc edema during the acute phase. The phenotype encompasses both the spontaneous form, characterized by structural optic disc vulnerability (crowded disc, small cup-to-disc ratio) in the setting of chronic microvascular risk factors such as hypertension, diabetes mellitus, or obstructive sleep apnea, and cases precipitated by acute systemic hemodynamic compromise including perioperative hypotension or significant blood loss. Explicitly excluded are: arteritic anterior ischemic optic neuropathy associated with giant cell arteritis; posterior ischemic optic neuropathy, which involves the retrobulbar optic nerve without optic disc edema at onset; and demyelinating optic neuritis, which involves immune-mediated inflammatory injury to the optic nerve rather than ischemic vascular occlusion."
+cacheFolder <- "cacheNaion"
+
+
+
 conceptSet <- createConceptSet(
   name = targetName,
   seedConceptIds = seedConceptId,

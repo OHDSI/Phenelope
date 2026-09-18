@@ -33,7 +33,11 @@ ConceptRecommender <- R6::R6Class(
     #' removed.
     #'
     #' @export
-    recommendConcepts = function(conceptIds, domainSettings, excludedVocabularyIds = NULL, connection, vocabDatabaseSchema) {}
+    recommendConcepts = function(conceptIds,
+                                 domainSettings,
+                                 excludedVocabularyIds = NULL,
+                                 connection,
+                                 vocabDatabaseSchema) {}
   )
 )
 
@@ -68,7 +72,11 @@ HecateConceptRecomender <- R6::R6Class(
     },
     #' @description
     #' Recommends concepts using the Hecate Phoebe implementation.
-    recommendConcepts = function(conceptIds, domainSettings, excludedVocabularyIds = NULL, connection, vocabDatabaseSchema) {
+    recommendConcepts = function(conceptIds,
+                                 domainSettings,
+                                 excludedVocabularyIds = NULL,
+                                 connection,
+                                 vocabDatabaseSchema) {
       errorMessages <- checkmate::makeAssertCollection()
       checkmate::assertIntegerish(conceptIds, min.len = 1, add = errorMessages)
       checkmate::assertClass(domainSettings, "DomainSettings", add = errorMessages)
@@ -101,10 +109,12 @@ HecateConceptRecomender <- R6::R6Class(
         recommendations <- recommendations |>
           filter(!.data$relationshipId %in% domainSettings$phoebeExclusions)
       }
+      recommendations <- recommendations |>
+        filter(!duplicated(recommendations$conceptId))
+
       belowMinCountConceptIds <- recommendations |>
         filter(.data$recordCount < private$minCount) |>
-        pull(.data$conceptId) |>
-        unique()
+        pull(.data$conceptId)
 
       # Concept information (domain, valid) in Hecate may be outdated, so fetch from vocab server:
       recommendations <- getConceptsFromIds(

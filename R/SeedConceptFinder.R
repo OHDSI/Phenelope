@@ -28,6 +28,8 @@ SeedConceptFinder <- R6::R6Class(
     #' @template CostTracker
     #' @template DomainSettings
     #' @template ExcludedVocabularyIds
+    #' @template Connection
+    #' @template VocabDatabaseSchema
     #'
     #' @description
     #' Return seed concepts given a concept set name and optionally a clinical definition.
@@ -44,7 +46,9 @@ SeedConceptFinder <- R6::R6Class(
                                 llmClient = NULL,
                                 costTracker = NULL,
                                 domainSettings = NULL,
-                                excludedVocabularyIds = NULL) {}
+                                excludedVocabularyIds = NULL,
+                                connection = NULL,
+                                vocabDatabaseSchema = NULL) {}
   )
 )
 
@@ -95,7 +99,9 @@ DefaultSeedConceptFinder <- R6::R6Class(
                                 llmClient = NULL,
                                 costTracker = NULL,
                                 domainSettings = NULL,
-                                excludedVocabularyIds = NULL) {
+                                excludedVocabularyIds = NULL,
+                                connection = NULL,
+                                vocabDatabaseSchema = NULL) {
       errorMessages <- checkmate::makeAssertCollection()
       checkmate::assertCharacter(name, len = 1, add = errorMessages)
       checkmate::assertCharacter(clinicalDefinition, len = 1, null.ok = TRUE, add = errorMessages)
@@ -103,6 +109,8 @@ DefaultSeedConceptFinder <- R6::R6Class(
       checkmate::assertEnvironment(costTracker, null.ok = TRUE, add = errorMessages)
       checkmate::assertClass(domainSettings, "DomainSettings", null.ok = TRUE, add = errorMessages)
       checkmate::assertCharacter(excludedVocabularyIds, null.ok = TRUE, add = errorMessages)
+      checkmate::assertClass(connection, "DatabaseConnectorConnection", null.ok = TRUE, add = errorMessages)
+      checkmate::assertCharacter(vocabDatabaseSchema, len = 1, null.ok = TRUE, add = errorMessages)
       checkmate::reportAssertions(collection = errorMessages)
       if (private$addSynonyms) {
         message("  Adding synonyms to name")
@@ -125,6 +133,15 @@ DefaultSeedConceptFinder <- R6::R6Class(
           filter(.data$recordCount >= private$minCount)
       }
       searchResults <- mergeRankings(searchResults)
+      if (!is.null(connection)) {
+        # Hecate may have conceptst not in Vocab database, so align
+        searchResults <- getConceptsFromIds(
+          conceptIds = searchResults$conceptId,
+          origin = "SEED",
+          connection = connection,
+          vocabDatabaseSchema = vocabDatabaseSchema)
+      }
+
       seedConcepts <- searchResults |>
         slice_head(n = private$maxN)
       message("  - Found ", nrow(seedConcepts), " seed concepts through fuzzy vocab search")
