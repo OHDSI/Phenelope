@@ -26,7 +26,8 @@ Recommend concepts
   domainSettings,
   excludedVocabularyIds = NULL,
   connection,
-  vocabDatabaseSchema
+  vocabDatabaseSchema,
+  iteration
 )}
     \if{html}{\out{</div>}}
   }
@@ -38,6 +39,7 @@ Recommend concepts
       \item{\code{excludedVocabularyIds}}{Character vector of OHDSI Vocabulary names to exclude.}
       \item{\code{connection}}{An open connection to a database server, as created by \code{DatabaseConnector::connect()}.}
       \item{\code{vocabDatabaseSchema}}{The database and or schema where the OHDSI Vocabulary tables are loaded.}
+      \item{\code{iteration}}{the current pass through the recommender}
     }
     \if{html}{\out{</div>}}
   }

@@ -27,13 +27,14 @@ ConceptRecommender <- R6::R6Class(
     #' @template Connection
     #' @template VocabDatabaseSchema
     #' @template ExcludedVocabularyIds
+    #' @param iteration the current pass through the recommender
     #'
     #' @returns
     #' An object of type `Concepts` containing the recommended concepts. Overlap with the input concepts is *not*
     #' removed.
     #'
     #' @export
-    recommendConcepts = function(conceptIds, domainSettings, excludedVocabularyIds = NULL, connection, vocabDatabaseSchema) {}
+    recommendConcepts = function(conceptIds, domainSettings, excludedVocabularyIds = NULL, connection, vocabDatabaseSchema, iteration) {}
   )
 )
 
@@ -68,13 +69,14 @@ HecateConceptRecomender <- R6::R6Class(
     },
     #' @description
     #' Recommends concepts using the Hecate Phoebe implementation.
-    recommendConcepts = function(conceptIds, domainSettings, excludedVocabularyIds = NULL, connection, vocabDatabaseSchema) {
+    recommendConcepts = function(conceptIds, domainSettings, excludedVocabularyIds = NULL, connection, vocabDatabaseSchema, iteration) {
       errorMessages <- checkmate::makeAssertCollection()
       checkmate::assertIntegerish(conceptIds, min.len = 1, add = errorMessages)
       checkmate::assertClass(domainSettings, "DomainSettings", add = errorMessages)
       checkmate::assertCharacter(excludedVocabularyIds, null.ok = TRUE, add = errorMessages)
       checkmate::assertClass(connection, "DatabaseConnectorConnection", add = errorMessages)
       checkmate::assertCharacter(vocabDatabaseSchema, len = 1, add = errorMessages)
+      checkmate::assertInteger(iteration, min.len = 1, add = errorMessages)
       checkmate::reportAssertions(collection = errorMessages)
 
       message("  Adding descendants")
@@ -95,39 +97,43 @@ HecateConceptRecomender <- R6::R6Class(
       }
       message("  - Found ", nrow(descendants), " additional concepts through descendants")
 
-      message("  Getting Phoebe recommendations")
-      recommendations <- getHecatePhoebeRecommendations(c(conceptIds, descendants$conceptId))
-      if (!is.null(domainSettings) && !is.null(domainSettings$phoebeExclusions)) {
-        recommendations <- recommendations |>
-          filter(!.data$relationshipId %in% domainSettings$phoebeExclusions)
-      }
-      belowMinCountConceptIds <- recommendations |>
-        filter(.data$recordCount < private$minCount) |>
-        pull(.data$conceptId) |>
-        unique()
+      if(iteration == 1){ #get phoebe recommendations on the first pass only
+        message("  Getting Phoebe recommendations")
+        recommendations <- getHecatePhoebeRecommendations(c(conceptIds, descendants$conceptId))
+        if (!is.null(domainSettings) && !is.null(domainSettings$phoebeExclusions)) {
+          recommendations <- recommendations |>
+            filter(!.data$relationshipId %in% domainSettings$phoebeExclusions)
+        }
+        belowMinCountConceptIds <- recommendations |>
+          filter(.data$recordCount < private$minCount) |>
+          pull(.data$conceptId) |>
+          unique()
 
-      # Concept information (domain, valid) in Hecate may be outdated, so fetch from vocab server:
-      recommendations <- getConceptsFromIds(
-        conceptIds = recommendations$conceptId,
-        origin = "RECOMMENDED",
-        connection = connection,
-        vocabDatabaseSchema = vocabDatabaseSchema) |>
-        mutate(status = if_else(.data$conceptId %in% belowMinCountConceptIds, "BELOW_MIN_COUNT", "UNADJUDICATED"))
+        # Concept information (domain, valid) in Hecate may be outdated, so fetch from vocab server:
+        recommendations <- getConceptsFromIds(
+          conceptIds = recommendations$conceptId,
+          origin = "RECOMMENDED",
+          connection = connection,
+          vocabDatabaseSchema = vocabDatabaseSchema) |>
+          mutate(status = if_else(.data$conceptId %in% belowMinCountConceptIds, "BELOW_MIN_COUNT", "UNADJUDICATED"))
 
-      if (!is.null(domainSettings)) {
+        if (!is.null(domainSettings)) {
+          recommendations <- recommendations |>
+            filter(.data$domainId %in% domainSettings$domainId)
+        }
+        if (!is.null(excludedVocabularyIds)) {
+          recommendations <- recommendations |>
+            filter(!.data$vocabularyId %in% excludedVocabularyIds)
+        }
         recommendations <- recommendations |>
-          filter(.data$domainId %in% domainSettings$domainId)
+          removeGenericConcepts() |>
+          filter(!.data$conceptId %in% c(conceptIds, descendants$conceptId))
+        message("  - Found ", nrow(recommendations), " additional concepts through Phoebe recommendations")
+        concepts <- bind_rows(descendants, recommendations)
+      } else { #set as only the descendants
+        concepts <- descendants
       }
-      if (!is.null(excludedVocabularyIds)) {
-        recommendations <- recommendations |>
-          filter(!.data$vocabularyId %in% excludedVocabularyIds)
-      }
-      recommendations <- recommendations |>
-        removeGenericConcepts() |>
-        filter(!.data$conceptId %in% c(conceptIds, descendants$conceptId))
-      message("  - Found ", nrow(recommendations), " additional concepts through Phoebe recommendations")
 
-      concepts <- bind_rows(descendants, recommendations)
       if (!private$keepLowCountConcepts) {
         concepts <- concepts |>
           filter(status != "BELOW_MIN_COUNT")

@@ -150,7 +150,8 @@ createConceptSet <- function(
                                                                   domainSettings = domainSettings,
                                                                   excludedVocabularyIds = excludedVocabularyIds,
                                                                   connection = connection,
-                                                                  vocabDatabaseSchema = vocabDatabaseSchema)
+                                                                  vocabDatabaseSchema = vocabDatabaseSchema,
+                                                                  iteration = iteration)
       recommendedConcepts |>
         filter(!.data$conceptId %in% concepts$conceptId)
     },
