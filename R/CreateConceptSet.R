@@ -124,7 +124,9 @@ createConceptSet <- function(
                                          llmClient = llmClient,
                                          costTracker = costTracker,
                                          domainSettings = domainSettings,
-                                         excludedVocabularyIds = excludedVocabularyIds)
+                                         excludedVocabularyIds = excludedVocabularyIds,
+                                         connection = connection,
+                                         vocabDatabaseSchema = vocabDatabaseSchema)
     },
     cacheFolder = cacheFolder,
     fileName = "SeedConcepts.csv"

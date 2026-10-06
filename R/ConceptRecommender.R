@@ -34,7 +34,12 @@ ConceptRecommender <- R6::R6Class(
     #' removed.
     #'
     #' @export
-    recommendConcepts = function(conceptIds, domainSettings, excludedVocabularyIds = NULL, connection, vocabDatabaseSchema, iteration) {}
+    recommendConcepts = function(conceptIds,
+                                 domainSettings,
+                                 excludedVocabularyIds = NULL,
+                                 connection,
+                                 vocabDatabaseSchema,
+                                 iteration) {}
   )
 )
 
@@ -69,7 +74,12 @@ HecateConceptRecomender <- R6::R6Class(
     },
     #' @description
     #' Recommends concepts using the Hecate Phoebe implementation.
-    recommendConcepts = function(conceptIds, domainSettings, excludedVocabularyIds = NULL, connection, vocabDatabaseSchema, iteration) {
+    recommendConcepts = function(conceptIds,
+                                 domainSettings,
+                                 excludedVocabularyIds = NULL,
+                                 connection,
+                                 vocabDatabaseSchema,
+                                 iteration) {
       errorMessages <- checkmate::makeAssertCollection()
       checkmate::assertIntegerish(conceptIds, min.len = 1, add = errorMessages)
       checkmate::assertClass(domainSettings, "DomainSettings", add = errorMessages)
@@ -98,16 +108,18 @@ HecateConceptRecomender <- R6::R6Class(
       message("  - Found ", nrow(descendants), " additional concepts through descendants")
 
       if(iteration == 1){ #get phoebe recommendations on the first pass only
-        message("  Getting Phoebe recommendations")
-        recommendations <- getHecatePhoebeRecommendations(c(conceptIds, descendants$conceptId))
-        if (!is.null(domainSettings) && !is.null(domainSettings$phoebeExclusions)) {
-          recommendations <- recommendations |>
-            filter(!.data$relationshipId %in% domainSettings$phoebeExclusions)
-        }
-        belowMinCountConceptIds <- recommendations |>
-          filter(.data$recordCount < private$minCount) |>
-          pull(.data$conceptId) |>
-          unique()
+      message("  Getting Phoebe recommendations")
+      recommendations <- getHecatePhoebeRecommendations(c(conceptIds, descendants$conceptId))
+      if (!is.null(domainSettings) && !is.null(domainSettings$phoebeExclusions)) {
+        recommendations <- recommendations |>
+          filter(!.data$relationshipId %in% domainSettings$phoebeExclusions)
+      }
+      recommendations <- recommendations |>
+        filter(!duplicated(recommendations$conceptId))
+
+      belowMinCountConceptIds <- recommendations |>
+        filter(.data$recordCount < private$minCount) |>
+        pull(.data$conceptId)
 
         # Concept information (domain, valid) in Hecate may be outdated, so fetch from vocab server:
         recommendations <- getConceptsFromIds(
@@ -149,37 +161,6 @@ HecateConceptRecomender <- R6::R6Class(
 )
 
 getHecatePhoebeRecommendations <- function(conceptIds) {
-  # Calling https://hecate.pantheon-hds.com/api/concepts/phoebe/bulk with 1 concept ID throws an error
-  if (length(conceptIds) == 1) {
-    return(getHecatePhoebeRecommendationsSingle(conceptIds))
-  } else {
-    return(getHecatePhoebeRecommendationsBulk(conceptIds))
-  }
-}
-
-getHecatePhoebeRecommendationsSingle <- function(conceptId) {
-  urlTemplate <- "https://hecate.pantheon-hds.com/api/concepts/%d/phoebe"
-
-  message("  Searching Phoebe for concepts ", conceptId)
-
-  response <- httr::GET(sprintf(urlTemplate, conceptId))
-
-  if (httr::status_code(response) == 200) {
-    contentText <- httr::content(response, "text", encoding = "UTF-8")
-    if (contentText == "[]") {
-      data <- createEmptyPhoebeData()
-    } else {
-      data <- jsonlite::fromJSON(contentText)
-    }
-  } else {
-    stop("Error in phoebe search for concept ", conceptId, " with HTML repsonse ", httr::status_code(response))
-  }
-  data <- data |>
-    SqlRender::snakeCaseToCamelCaseNames()
-  return(data)
-}
-
-getHecatePhoebeRecommendationsBulk <- function(conceptIds) {
   phoebeUrlstring <- "https://hecate.pantheon-hds.com/api/concepts/phoebe/bulk"
 
   phoebeData <- list()
@@ -191,7 +172,7 @@ getHecatePhoebeRecommendationsBulk <- function(conceptIds) {
     message("  Searching Phoebe for concepts ", start, " to ", end, " out of ", length(conceptIds))
 
     batch <- conceptIds[start:end]
-    response <- httr::POST(phoebeUrlstring, body = list(ids = as.integer(batch)), encode = "json" )
+    response <- httr::POST(phoebeUrlstring, body = list(ids = as.list(as.integer(batch))), encode = "json" )
 
     if (httr::status_code(response) == 200) {
       contentText <- httr::content(response, "text", encoding = "UTF-8")
@@ -200,6 +181,9 @@ getHecatePhoebeRecommendationsBulk <- function(conceptIds) {
       } else {
         data <- jsonlite::fromJSON(contentText)
         data <- bind_rows(data$results)
+        if (nrow(data) == 0) {
+          data <- createEmptyPhoebeData()
+        }
         phoebeData[[length(phoebeData) + 1]] <- data
       }
     } else {

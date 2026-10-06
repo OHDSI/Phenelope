@@ -181,15 +181,15 @@ getConceptsFromIds <- function(conceptIds, origin = "SEED", status = "UNADJUDICA
       filter(.data$conceptId == 2)
   } else {
     sql <- "
-    SELECT concept_id,
-      concept_name,
-      vocabulary_id,
-      domain_id,
-      concept_class_id
-    FROM @cdm_database_schema.concept
-    WHERE concept_id IN (@concept_ids)
-      AND invalid_reason IS NULL;
-  "
+      SELECT concept_id,
+        concept_name,
+        vocabulary_id,
+        domain_id,
+        concept_class_id
+      FROM @cdm_database_schema.concept
+      WHERE concept_id IN (@concept_ids)
+        AND invalid_reason IS NULL;
+    "
     concepts <- DatabaseConnector::renderTranslateQuerySql(
       connection = connection,
       sql = sql,
@@ -197,6 +197,11 @@ getConceptsFromIds <- function(conceptIds, origin = "SEED", status = "UNADJUDICA
       concept_ids = conceptIds,
       snakeCaseToCamelCase = TRUE
     )
+    # Keep same order as input:
+    concepts <- concepts |>
+      inner_join(tibble(conceptId = conceptIds, order = seq_along(conceptIds)), by = join_by("conceptId")) |>
+      arrange(order) |>
+      select(-"order")
   }
   concepts <- asConcepts(concepts, origin = origin, status = status)
   return(concepts)
