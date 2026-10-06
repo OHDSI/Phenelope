@@ -14,7 +14,7 @@ Imports:
     DatabaseConnector (>= 6.3.0),
     httr,
     rJava,
-    Capr (>= 2.0.9),
+    Capr (>= 3.0.0),
     jsonlite,
     ellmer,
     SqlRender,

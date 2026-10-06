@@ -10,7 +10,8 @@ recommendConcepts <- function(recommender, ...) {
     domainSettings = domainSettings,
     excludedVocabularyIds = NULL,
     connection = connection,
-    vocabDatabaseSchema = "main"
+    vocabDatabaseSchema = "main",
+    iteration = 1L
   )
   replacements <- list(...)
   arguments[names(replacements)] <- replacements

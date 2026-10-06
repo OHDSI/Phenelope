@@ -165,7 +165,7 @@ asConceptSetExpression <- function(concepts, name, connection, vocabDatabaseSche
   conceptSet <- Capr::cs(approvedConceptIds, name = name)
 
   conceptSet <- Capr::getConceptSetDetails(conceptSet, connection, vocabularyDatabaseSchema = vocabDatabaseSchema)
-  json <- Capr::toConceptSetJson(conceptSet)
+  json <- Capr::as.json(conceptSet)
   return(json)
 }
 
