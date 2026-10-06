@@ -153,37 +153,6 @@ HecateConceptRecomender <- R6::R6Class(
 )
 
 getHecatePhoebeRecommendations <- function(conceptIds) {
-  # Calling https://hecate.pantheon-hds.com/api/concepts/phoebe/bulk with 1 concept ID throws an error
-  if (length(conceptIds) == 1) {
-    return(getHecatePhoebeRecommendationsSingle(conceptIds))
-  } else {
-    return(getHecatePhoebeRecommendationsBulk(conceptIds))
-  }
-}
-
-getHecatePhoebeRecommendationsSingle <- function(conceptId) {
-  urlTemplate <- "https://hecate.pantheon-hds.com/api/concepts/%d/phoebe"
-
-  message("  Searching Phoebe for concepts ", conceptId)
-
-  response <- httr::GET(sprintf(urlTemplate, conceptId))
-
-  if (httr::status_code(response) == 200) {
-    contentText <- httr::content(response, "text", encoding = "UTF-8")
-    if (contentText == "[]") {
-      data <- createEmptyPhoebeData()
-    } else {
-      data <- jsonlite::fromJSON(contentText)
-    }
-  } else {
-    stop("Error in phoebe search for concept ", conceptId, " with HTML repsonse ", httr::status_code(response))
-  }
-  data <- data |>
-    SqlRender::snakeCaseToCamelCaseNames()
-  return(data)
-}
-
-getHecatePhoebeRecommendationsBulk <- function(conceptIds) {
   phoebeUrlstring <- "https://hecate.pantheon-hds.com/api/concepts/phoebe/bulk"
 
   phoebeData <- list()
@@ -195,7 +164,7 @@ getHecatePhoebeRecommendationsBulk <- function(conceptIds) {
     message("  Searching Phoebe for concepts ", start, " to ", end, " out of ", length(conceptIds))
 
     batch <- conceptIds[start:end]
-    response <- httr::POST(phoebeUrlstring, body = list(ids = as.integer(batch)), encode = "json" )
+    response <- httr::POST(phoebeUrlstring, body = list(ids = as.list(as.integer(batch))), encode = "json" )
 
     if (httr::status_code(response) == 200) {
       contentText <- httr::content(response, "text", encoding = "UTF-8")
