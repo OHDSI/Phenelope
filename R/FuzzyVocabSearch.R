@@ -14,12 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-searchConcepts = function(term, domainSettings, excludedVocabularyIds, maxN = 10, fuzzyVocabSearchType) {
+searchConcepts = function(term,
+                          domainIds = NULL,
+                          conceptClassIds = NULL,
+                          excludedVocabularyIds = NULL,
+                          vocabularyIds = NULL,
+                          standardConcept = "S",
+                          maxN = 10,
+                          fuzzyVocabSearchType) {
   if (fuzzyVocabSearchType == "HECATE") {
     searchResults <- searchConceptsHecate(
       term = term,
-      domainSettings = domainSettings,
+      domainIds = domainIds,
+      conceptClassIds = conceptClassIds,
       excludedVocabularyIds = excludedVocabularyIds,
+      vocabularyIds = vocabularyIds,
+      standardConcept = standardConcept,
       maxN = maxN
     )
     if (nrow(searchResults) == 0) {
@@ -49,20 +59,37 @@ getEmptySearchResult <- function() {
     filter(.data$conceptId == 1)
 }
 
-searchConceptsHecate = function(term, domainSettings, excludedVocabularyIds, maxN = 10) {
+searchConceptsHecate = function(term,
+                                domainIds,
+                                conceptClassIds,
+                                excludedVocabularyIds,
+                                vocabularyIds,
+                                standardConcept,
+                                maxN) {
   maxRetries <- 10
   waitTime <- 3
   params <- list(
     q = term,
     limit = maxN
   )
-  if (!is.null(domainSettings)) {
-    params$domain_id <- paste(domainSettings$domainIds, collapse = ",")
+  if (!is.null(domainIds)) {
+    params$domain_id <- paste(domainIds, collapse = ",")
+  }
+  if (!is.null(conceptClassIds)) {
+    params$concept_class_id <- paste(conceptClassIds, collapse = ",")
   }
   if (!is.null(excludedVocabularyIds)) {
     params$exclude_vocabulary_id <- paste(excludedVocabularyIds, collapse = ",")
   }
-  url <- "https://hecate.pantheon-hds.com/api/search_standard"
+  if (!is.null(vocabularyIds)) {
+    params$vocabulary_id <- paste(vocabularyIds, collapse = ",")
+  }
+  if (standardConcept == "S") {
+    url <- "https://hecate.pantheon-hds.com/api/search_standard"
+  } else {
+    url <- "https://hecate.pantheon-hds.com/api/search"
+    params$standard_concept <- standardConcept
+  }
 
   for (attempt in 1:maxRetries) {
     response <- tryCatch(

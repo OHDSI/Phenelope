@@ -1,7 +1,7 @@
 library(Phenelope)
 
 llmClient <- ellmer::chat_lmstudio(
-  model = "qwen/qwen3.6-35b-a3b"
+  model = "qwen3.8-27b-splash"
 )
 options(forceUnstructured = TRUE)
 
@@ -24,6 +24,14 @@ conceptSet <- createConceptSet(
   cacheFolder = "cacheAlf"
 )
 
+name <- "Ibuprofen"
+conceptSet <- createDrugConceptSet(
+  name = name,
+  llmClient = llmClient,
+  connectionDetails = connectionDetails,
+  vocabDatabaseSchema = vocabDatabaseSchema,
+  cacheFolder = "cacheIbuprofen"
+)
 
 # Test recommender separately:
 conceptRecommender <- HecateConceptRecomender$new(minCount = 0)

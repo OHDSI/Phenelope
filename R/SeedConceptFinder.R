@@ -125,7 +125,7 @@ DefaultSeedConceptFinder <- R6::R6Class(
       for (i in seq_along(names)) {
         searchResults[[i]] <- searchConcepts(
           term = names[i],
-          domainSettings = domainSettings,
+          domainIds = domainSettings$domainIds,
           excludedVocabularyIds = excludedVocabularyIds,
           maxN = private$maxN,
           fuzzyVocabSearchType = private$fuzzyVocabSearchType

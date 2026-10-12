@@ -1,0 +1,28 @@
+Search Term: %search_term%
+
+Current List of Drugs:
+%current_list%
+
+Clinical Definition:
+%definition%
+
+Task:
+Relying on your comprehensive training knowledge of canonical medical databases (including RxNorm/RxNav, the FDA NDC Directory, DailyMed, WHO ATC index, and PubMed clinical guidelines), identify and add MORE generic drugs that fit the Search Term and Clinical Definition.
+
+Rules for Extraction:
+G1) ONLY output the generic name of the drug. DO NOT include medical codes or brand names.
+G2) COMBINATION PRODUCTS: Include all drugs in a dispensed combination even if a member of the combination does not fit the search term. (Example: For "systemic corticosteroids," if prednisolone and trimeprazine are dispensed together, output "prednisolone and trimeprazine").
+G3) Be EXTREMELY SENSITIVE. Include members even if they don't match all criteria perfectly. When in doubt, INCLUDE it. We prefer false positives over false negatives.
+G4) EXCLUSION: Do not output any drugs that are already present in the "Current List of Drugs". Only output NEW additions.
+G5) SEEDING: Use the "Current List of Drugs" as contextual seeds to help you identify similar pharmacological classes and analogs.
+G6) EXHAUSTIVENESS: Recall as many relevant additions as possible based on the clinical definition. If you are starting from an empty list, aim to recall at least %start_number% highly relevant drugs if they exist. If adding to an existing list, aim for at least %next_number% additional drugs if they exist.
+
+Output Format:
+Return ONLY a single, valid JSON object using the exact schema below. Do not include markdown formatting (like ```json), introductions, or conclusions.
+
+{
+"drugName": [
+"drug name 1",
+"drug name 2 and drug name 3"
+]
+}

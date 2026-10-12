@@ -92,7 +92,7 @@ getDomainSettings <- function(domain) {
       phoebeExclusions = c("Ontology-parent")
     )
   } else if (domain == "DRUG") {
-    stop("The DRUG domain is currently not supported")
+    stop("For creating drug concept sets, use the createDrugConceptSet function.")
   }
   class(domainSettings) <- "DomainSettings"
   return(domainSettings)
