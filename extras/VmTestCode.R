@@ -88,3 +88,20 @@ conceptSet <- createConceptSet(
   vocabDatabaseSchema = cdmDatabaseSchema
 )
 writeLines(conceptSet)
+
+# Drugs
+conceptSet <- createDrugConceptSet(
+  name = "Statins",
+  llmClient = llmClientO3,
+  connectionDetails = cd,
+  vocabDatabaseSchema = cdmDatabaseSchema
+)
+writeLines(conceptSet)
+
+conceptSet <- createDrugConceptSet(
+  name = "Topical antifungals",
+  llmClient = llmClientO3,
+  connectionDetails = cd,
+  vocabDatabaseSchema = cdmDatabaseSchema
+)
+writeLines(conceptSet)
