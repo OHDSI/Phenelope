@@ -53,7 +53,7 @@ jobs:
       CDM_SNOWFLAKE_OHDSI_SCHEMA: ${{ secrets.CDM_SNOWFLAKE_OHDSI_SCHEMA }}
       CDM_SNOWFLAKE_PASSWORD: ${{ secrets.CDM_SNOWFLAKE_PASSWORD }}
       CDM_SNOWFLAKE_CONNECTION_STRING: ${{ secrets.CDM_SNOWFLAKE_CONNECTION_STRING }}
-      CDM_SNOWFLAKE_USER: ${{ secrets.CDM_SNOWFLAKE_USER }}      
+      CDM_SNOWFLAKE_USER: ${{ secrets.CDM_SNOWFLAKE_USER }}
       CDM5_SPARK_USER: ${{ secrets.CDM5_SPARK_USER }}
       CDM5_SPARK_PASSWORD: ${{ secrets.CDM5_SPARK_PASSWORD }}
       CDM5_SPARK_CONNECTION_STRING: ${{ secrets.CDM5_SPARK_CONNECTION_STRING }}
@@ -70,14 +70,14 @@ jobs:
       CDM_IRIS_OHDSI_SCHEMA: ${{ secrets.CDM_IRIS_OHDSI_SCHEMA }}
 
     steps:
-      - uses: actions/checkout@v4
-      
+      - uses: actions/checkout@v6
+
       - name: Setup Java
         if: runner.os != 'Linux'
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'corretto'
-          java-version: '8'
+          java-version: '21'
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -121,7 +121,7 @@ jobs:
           remotes::install_cran("covr")
           remotes::install_cran("xml2")
         shell: Rscript {0}
-        
+
       - name: Test coverage
         if: runner.os == 'Linux'
         run: |
@@ -133,11 +133,11 @@ jobs:
           covr::to_cobertura(cov)
         shell: Rscript {0}
 
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v7
         if: runner.os == 'Linux'
         with:
-          file: ./cobertura.xml
-          plugin: noop
+          files: ./cobertura.xml
+          plugins: noop
           disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
 
@@ -153,7 +153,7 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
