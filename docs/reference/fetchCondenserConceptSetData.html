@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Phenelope</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
@@ -80,17 +80,17 @@
 <dl><dt id="arg-conceptsetexpression">conceptSetExpression<a class="anchor" aria-label="anchor" href="#arg-conceptsetexpression"></a></dt>
 <dd><p>The concept set expression to condense. This can
 be either a JSON expression or the output of
-`ROhdsiWebApi::getConceptSetDefinition`.</p></dd>
+<code><a href="https://ohdsi.github.io/ROhdsiWebApi/reference/getConceptSetDefinition.html" class="external-link">ROhdsiWebApi::getConceptSetDefinition</a></code>.</p></dd>
 
 
 <dt id="arg-connectiondetails">connectionDetails<a class="anchor" aria-label="anchor" href="#arg-connectiondetails"></a></dt>
-<dd><p>The output of `DatabaseConnector::createConnectionDetails()`.
-Is ignored if `connection` is provided.</p></dd>
+<dd><p>The output of <code><a href="https://ohdsi.github.io/DatabaseConnector/reference/createConnectionDetails.html" class="external-link">DatabaseConnector::createConnectionDetails()</a></code>.
+Is ignored if <code>connection</code> is provided.</p></dd>
 
 
 <dt id="arg-connection">connection<a class="anchor" aria-label="anchor" href="#arg-connection"></a></dt>
-<dd><p>A `DatabaseConnector` connection. Can be NULL if
-`connectionDetails` is provided.</p></dd>
+<dd><p>A <code>DatabaseConnector</code> connection. Can be NULL if
+<code>connectionDetails</code> is provided.</p></dd>
 
 
 <dt id="arg-cdmdatabaseschema">cdmDatabaseSchema<a class="anchor" aria-label="anchor" href="#arg-cdmdatabaseschema"></a></dt>
@@ -99,9 +99,8 @@ tables.</p></dd>
 
 
 <dt id="arg-tempemulationschema">tempEmulationSchema<a class="anchor" aria-label="anchor" href="#arg-tempemulationschema"></a></dt>
-<dd><p>For database platforms that do not natively
-support temp tables, a database schema where the
-user has write access.</p></dd>
+<dd><p>For database platforms that do not natively support temp tables, a database schema where
+the user has write access.</p></dd>
 
 
 <dt id="arg-excludedvocabularies">excludedVocabularies<a class="anchor" aria-label="anchor" href="#arg-excludedvocabularies"></a></dt>
@@ -110,7 +109,7 @@ user has write access.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list containing the three inputs for `condenseConceptSet()`.</p>
+    <p>A list containing the three inputs for <code><a href="condenseConceptSet.html">condenseConceptSet()</a></code>.</p>
     </div>
 
   </div>
@@ -125,7 +124,7 @@ user has write access.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

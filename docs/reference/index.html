@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Phenelope</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
@@ -61,21 +61,61 @@
           <p class="section-desc"></p>
         </th>
       </tr></tbody><tbody><tr><td>
+          <p><code><a href="ConceptAdjudicator.html">ConceptAdjudicator</a></code> </p>
+        </td>
+        <td><p>An abstract class for a concept adjudicator.</p></td>
+      </tr><tr><td>
+          <p><code><a href="ConceptRecommender.html">ConceptRecommender</a></code> </p>
+        </td>
+        <td><p>The abstract concept recommender class Recommend concepts</p></td>
+      </tr><tr><td>
+          <p><code><a href="DefaultConceptAdjudicator.html">DefaultConceptAdjudicator</a></code> </p>
+        </td>
+        <td><p>The default concept adjudicator using the LLM and prompts.</p></td>
+      </tr><tr><td>
+          <p><code><a href="DefaultSeedConceptFinder.html">DefaultSeedConceptFinder</a></code> </p>
+        </td>
+        <td><p>The default seed concept finder</p></td>
+      </tr><tr><td>
+          <p><code><a href="HecateConceptRecomender.html">HecateConceptRecomender</a></code> </p>
+        </td>
+        <td><p>Concept recommender implementation using the Hecate Phoebe search.</p></td>
+      </tr><tr><td>
+          <p><code><a href="SeedConceptFinder.html">SeedConceptFinder</a></code> </p>
+        </td>
+        <td><p>An abstract class for a seed concept finder.</p></td>
+      </tr><tr><td>
+          <p><code><a href="asConcepts.html">asConcepts()</a></code> </p>
+        </td>
+        <td><p>Convert data frame to Concepts</p></td>
+      </tr><tr><td>
           <p><code><a href="condenseConceptSet.html">condenseConceptSet()</a></code> </p>
         </td>
         <td><p>Condense concept set</p></td>
       </tr><tr><td>
-          <p><code><a href="createClinicalDescription.html">createClinicalDescription()</a></code> </p>
-        </td>
-        <td><p>Create clinical description</p></td>
-      </tr><tr><td>
           <p><code><a href="createConceptSet.html">createConceptSet()</a></code> </p>
         </td>
-        <td><p>Create concept set by calling the LLM</p></td>
+        <td><p>Create a concept set</p></td>
+      </tr><tr><td>
+          <p><code><a href="createDrugConceptSet.html">createDrugConceptSet()</a></code> </p>
+        </td>
+        <td><p>Create a drug concept set</p></td>
       </tr><tr><td>
           <p><code><a href="fetchCondenserConceptSetData.html">fetchCondenserConceptSetData()</a></code> </p>
         </td>
         <td><p>Fetch data for concept set condensation</p></td>
+      </tr><tr><td>
+          <p><code><a href="getDomain.html">getDomain()</a></code> </p>
+        </td>
+        <td><p>Get the domain of a concept set target</p></td>
+      </tr><tr><td>
+          <p><code><a href="getDomainSettings.html">getDomainSettings()</a></code> </p>
+        </td>
+        <td><p>Get the settings for a specific domain.</p></td>
+      </tr><tr><td>
+          <p><code><a href="validateConcepts.html">validateConcepts()</a></code> </p>
+        </td>
+        <td><p>Validate a Concepts object</p></td>
       </tr></tbody></table></div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -89,7 +129,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

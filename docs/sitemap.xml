@@ -5,11 +5,22 @@
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
 <url><loc>/news/index.html</loc></url>
+<url><loc>/reference/ConceptAdjudicator.html</loc></url>
+<url><loc>/reference/ConceptRecommender.html</loc></url>
+<url><loc>/reference/DefaultConceptAdjudicator.html</loc></url>
+<url><loc>/reference/DefaultSeedConceptFinder.html</loc></url>
+<url><loc>/reference/HecateConceptRecomender.html</loc></url>
+<url><loc>/reference/Phenelope-package.html</loc></url>
+<url><loc>/reference/SeedConceptFinder.html</loc></url>
+<url><loc>/reference/asConcepts.html</loc></url>
 <url><loc>/reference/condenseConceptSet.html</loc></url>
 <url><loc>/reference/createClinicalDescription.html</loc></url>
 <url><loc>/reference/createConceptSet.html</loc></url>
+<url><loc>/reference/createDrugConceptSet.html</loc></url>
 <url><loc>/reference/fetchCondenserConceptSetData.html</loc></url>
+<url><loc>/reference/getDomain.html</loc></url>
+<url><loc>/reference/getDomainSettings.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
-<url><loc>/reference/Phenelope-package.html</loc></url>
+<url><loc>/reference/validateConcepts.html</loc></url>
 </urlset>
 

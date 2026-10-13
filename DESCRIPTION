@@ -31,8 +31,7 @@ Suggests:
     keyring,
     Eunomia
 Remotes:
-    ohdsi/Capr,
-    ohdsi/CirceR
+    ohdsi/Capr
 URL: https://ohdsi.github.io/Phenelope, https://github.com/OHDSI/Phenelope
 BugReports: https://github.com/OHDSI/Phenelope/issues
 Encoding: UTF-8
