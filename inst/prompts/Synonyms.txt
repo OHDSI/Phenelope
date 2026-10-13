@@ -1,0 +1,17 @@
+Task: You are a healthcare ontology expert. Generate a list of synonymous terms for the healthcare concept: %name%.
+
+Inclusions:
+* Provide terms a healthcare professional would reasonably use interchangeably with this concept.
+* Include common clinical, medical, and lay synonyms or alternative wordings. 
+* Minor phrasing differences are acceptable provided they represent the exact same core concept.
+
+Exclusions:
+* Do NOT include broader or narrower concepts, subtypes, causes, manifestations, findings, complications, treatments, or procedures.
+
+Output Requirements:
+
+Return ONLY valid JSON matching the exact structure below, with no additional text or markdown formatting:
+
+{
+  "synonyms": ["term 1", "term 2", "term 3"]
+}

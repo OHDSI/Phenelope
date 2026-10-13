@@ -1,0 +1,50 @@
+Your specific task is to evaluate whether any of the proposed concept(s) are EITHER synonomous with OR has recognized DIRECT therapeutic and pharmacologic use as a %name%.
+
+-- Start of Clinical Definition
+%definition%
+--- End of Clinical Definition
+
+General rules:
+G1) Always consider synonyms of %name% to be absolutely CLINICALLY interchangeable with %name% in ALL contexts (everyday use, different ontologies, clinical context, etc.).
+G2) DO NOT infer proposed concept to be more specific such as by adding specific words like Depot or adding extra words for clarity!
+G3) If %name% has multiple parts ALL of the parts need to be satisfied.
+  Example 1: "ANTIPSORIATICS FOR TOPICAL USE"  requires ALL of the following: the concept must be an "ANTIPSORIATIC" AND must be "FOR TOPICAL USE" for it to be a part of "ANTIPSORIATICS FOR TOPICAL USE"
+  Example 2: "Ophthalmic steroid or antihistamine medications" can be either steroids or antihistamines BUT the administrative route MUST be for Ophthalmic use
+G4) DO NOT use ATC codes in your analysis
+G5) DO NOT assume any uses for the drug that are not specified in the string.
+  Example 1: "glucose medication" implies ONLY glucose drugs, NOT glucose control drugs
+G6) For combination products, if any of the components should be included, then the combination should be included
+G7) There are differences between "long acting" oral medications and "long acting" injectable medications.
+  For orals, consider the following aspects in your decision:
+    1) Long elimination half-life, the drug remains in the body for several days after a dose.
+    2) Extended-release (ER/XR) formulation, the tablet releases medication slowly over many hours.
+    3) Active metabolites, the parent drug produces metabolites that remain active for extended periods.
+    4) Less-than-daily dosing, some newer oral formulations can be dosed weekly rather than daily.
+  For injectables, consider the following aspects in your decision:
+    1) Depot formulations that slowly release medication from muscle or subcutaneous tissue over weeks to months.
+    2) Long-chain esters (e.g., decanoate formulations) that must be gradually broken down by the body before the active drug is released.
+    3) Microsphere technology that slowly degrades and releases medication over time.
+    4) Nanocrystal suspensions that dissolve gradually after injection.
+    5) Always consider the dose of the product. Some products have lower doses NOT intended as long acting.
+G8) For specific concepts that specify a branded product, proposed concepts must match the branded product name and NOT simply be therapeutically equivalent products.
+  Example 1: Remicade is a branded product.  Remsima is a bioequivalent to Remicade but must NOT be included for a specific concept of Remicade.
+
+Use the following specific rules to decide on your answer:
+S1) If the proposed concept(s) is EITHER synonomous with OR has recognized DIRECT therapeutic and pharmacologic use as a %name%, the answer is YES.
+S2) If proposed concept is a synonym of %name%, the answer is YES.
+S3) If proposed concept is a subtype of %name%, the answer is YES.
+S4) If proposed concept is a synonym, subtype, or exclusive manifestation of any of excluded concepts (i.e., only happens with excluded concepts), the answer is NO.
+
+Here is your data to analyze:
+Proposed concept(s): %concepts%
+Specific concept: %name%
+
+Give a JSON-structured summary for the following (DO NOT ADD ANY OTHER NON-JSON FORMATTED TEXT):
+[
+  {
+    "conceptId": "proposed concept Id (conceptId from above)",
+    "conceptName": "proposed concept name (conceptSetTarget from above)",
+    "decision": "Is proposed concept EITHER synonomous with OR has recognized DIRECT therapeutic and pharmacologic use as a %name%? [IMPORTANT Answer ONLY as: 'KEEP', 'REMOVE' (DO NOT REPEAT THE QUESTION IN YOUR ANSWER!)]",
+    "rationale": "Provide a rationale for your answer INCLUDING the rule above that was satisfied"
+  }
+]

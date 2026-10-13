@@ -2,7 +2,7 @@
 Your specific task is to evaluate a string for a named drug to determine specific characteristics.
 
 Here is your data to analyze:
-drug name string: DRUG_NAME
+drug name string: %drug_name%
 
 Characteristics to assess:
 C1: Does the string infer a route of administration, such as intravenous (iv), oral, etc.

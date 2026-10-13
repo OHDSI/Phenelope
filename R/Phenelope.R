@@ -19,8 +19,10 @@
 
 #' @import DatabaseConnector
 #' @importFrom rlang .data
+#' @importFrom utils write.csv
 #' @import dplyr
 #' @import ellmer
+#' @import R6
 #' @importFrom Capr as.json cs getConceptSetDetails
 NULL
 

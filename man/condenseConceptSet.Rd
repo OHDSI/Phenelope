@@ -7,7 +7,7 @@
 condenseConceptSet(conceptSetData)
 }
 \arguments{
-\item{conceptSetData}{An object of type `ConceptData` as created by `fetchConceptSetData`.}
+\item{conceptSetData}{An object of type \code{ConceptData} as created by \code{fetchConceptSetData}.}
 }
 \value{
 A tibble with a representation of the optimal concept set expression

@@ -199,7 +199,6 @@
   }
 
   cost <- 0
-  llmClient$set_turns(list()) # Reset the chat
 
   if (!is.null(testList)) {
     concepts <- testList
@@ -247,7 +246,7 @@
             systemPrompt <- "You are an expert medical doctor specializing in healthcare data analysis. Your primary function is to analyze healthcare data, including electronic health records, to infer causal relationships between exposures and health outcomes."
 
             llmClient$set_system_prompt(systemPrompt)
-
+            llmClient$set_turns(list()) # Reset the chat
             text <- llmClient$chat_structured(prompt,
                                               echo = "none",
                                               type = ellmer::type_array(ellmer::type_object(
@@ -293,7 +292,6 @@
 
             success <- TRUE
             cost <- cost + llmClient$get_cost()
-            llmClient$set_turns(list()) # Reset the chat
           },
           error = function(e) {
             # Handle the error: print a message and increment the attempt counter
