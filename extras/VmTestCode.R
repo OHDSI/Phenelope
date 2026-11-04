@@ -54,6 +54,10 @@ seedConceptId <- NULL
 targetClinicalDefinition <- "Non-arteritic Anterior Ischemic Optic Neuropathy (NAION) is an acute ischemic injury to the anterior segment of the optic nerve, arising from interruption of perfusion through the short posterior ciliary arteries supplying the optic nerve head, in the absence of a vasculitic etiology such as giant cell arteritis. It presents as a sudden-onset, unilateral visual disturbance ranging across the full severity spectrum â€” from a mild, sectoral or altitudinal visual field defect to severe reduction in visual acuity â€” accompanied by optic disc edema during the acute phase. The phenotype encompasses both the spontaneous form, characterized by structural optic disc vulnerability (crowded disc, small cup-to-disc ratio) in the setting of chronic microvascular risk factors such as hypertension, diabetes mellitus, or obstructive sleep apnea, and cases precipitated by acute systemic hemodynamic compromise including perioperative hypotension or significant blood loss. Explicitly excluded are: arteritic anterior ischemic optic neuropathy associated with giant cell arteritis; posterior ischemic optic neuropathy, which involves the retrobulbar optic nerve without optic disc edema at onset; and demyelinating optic neuritis, which involves immune-mediated inflammatory injury to the optic nerve rather than ischemic vascular occlusion."
 cacheFolder <- "cacheNaion"
 
+targetName <- "systemic corticosteroids"
+seedConceptId <- NULL
+targetClinicalDefinition <- NULL
+cacheFolder <- "cacheSystemCorticosteroids"
 
 
 conceptSet <- createConceptSet(
@@ -64,7 +68,8 @@ conceptSet <- createConceptSet(
   connectionDetails = cd,
   vocabDatabaseSchema = cdmDatabaseSchema,
   tempEmulationSchema = emulationSchema,
-  cacheFolder = cacheFolder
+  cacheFolder = cacheFolder,
+  batchSize = 100
 )
 writeLines(conceptSet)
 

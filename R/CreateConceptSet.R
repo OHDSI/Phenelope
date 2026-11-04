@@ -99,7 +99,8 @@ createConceptSet <- function(
     vocabDatabaseSchema = vocabDatabaseSchema,
     tempEmulationSchema = tempEmulationSchema,
     cacheFolder = cacheFolder,
-    fuzzyVocabSearchType = fuzzyVocabSearchType)
+    fuzzyVocabSearchType = fuzzyVocabSearchType,
+    batchSize = batchSize)
   } else {
     conceptSet <- createNonDrugConceptSet(
     name = name,
