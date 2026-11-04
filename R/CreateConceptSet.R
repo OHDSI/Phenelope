@@ -116,5 +116,5 @@ createConceptSet <- function(
     conceptAdjudicator = conceptAdjudicator,
     condenseConceptSet = condenseConceptSet)
   }
-
+  return(conceptSet)
 }
