@@ -25,7 +25,7 @@ conceptSet <- createConceptSet(
 )
 
 name <- "Ibuprofen"
-conceptSet <- createDrugConceptSet(
+conceptSet <- createConceptSet(
   name = name,
   llmClient = llmClient,
   connectionDetails = connectionDetails,

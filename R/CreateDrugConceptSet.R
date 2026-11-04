@@ -26,7 +26,13 @@
 #' @template VocabDatabaseSchema
 #' @template TempEmulationSchema
 #' @param cacheFolder               Optional: Folder where intermediary results can be stored.
-#' @param fuzzyVocabSearchType         Type of fuzzy vocabulary search. Currently only 'HECATE' is supported.
+#' @param fuzzyVocabSearchType      Type of fuzzy vocabulary search. Currently only 'HECATE' is supported.
+#' @param batchSize                 The size of the batches fed to the LLM for adjudication.
+#'
+#' @description
+#' Creates a concept set for drugs. For other domains, use the `createNonDrugConceptSet()` function.
+#' Alternatively, you can call the `createConceptSet()` function which automatically routes to the correct function.
+#'
 #'
 #' @returns
 #' A concept set expression
@@ -40,7 +46,8 @@ createDrugConceptSet <- function(
     vocabDatabaseSchema,
     tempEmulationSchema = getOption("sqlRenderTempEmulationSchema"),
     cacheFolder = NULL,
-    fuzzyVocabSearchType = "HECATE") {
+    fuzzyVocabSearchType = "HECATE",
+    batchSize = 20) {
   errorMessages <- checkmate::makeAssertCollection()
   checkmate::assertCharacter(name, len = 1, add = errorMessages)
   checkmate::assertCharacter(clinicalDefinition, len = 1, null.ok = TRUE, add = errorMessages)
@@ -50,6 +57,7 @@ createDrugConceptSet <- function(
   checkmate::assertCharacter(tempEmulationSchema, len = 1, null.ok = TRUE, add = errorMessages)
   checkmate::assertCharacter(cacheFolder, len = 1, null.ok = TRUE, add = errorMessages)
   checkmate::assertChoice(fuzzyVocabSearchType, choices = c("HECATE"), add = errorMessages)
+  checkmate::assertInt(batchSize, lower = 1, add = errorMessages)
   checkmate::reportAssertions(collection = errorMessages)
 
   start <- Sys.time()
@@ -98,7 +106,7 @@ createDrugConceptSet <- function(
   prompt <- paste(readLines(promptFile), collapse = "\n")
   systemPromptFile <- system.file("prompts", "DrugAdjudicationSystem.txt", package = "Phenelope")
   systemPrompt <- paste(readLines(systemPromptFile), collapse = "\n")
-  drugConceptAdjudicator <- DefaultConceptAdjudicator$new(batchSize = 20,
+  drugConceptAdjudicator <- DefaultConceptAdjudicator$new(batchSize = batchSize,
                                                           prompt = prompt,
                                                           systemPrompt = systemPrompt,
                                                           nForQuickScreen = .Machine$integer.max)

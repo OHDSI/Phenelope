@@ -14,8 +14,6 @@
 # See the License for the specific language governing permissions andD
 # limitations under the License.
 
-# source("R/HelperFunctions.R")
-
 #' Create a concept set
 #'
 #' @param name                      The name of the concept set to create. This should be an informative name reflecting
@@ -32,21 +30,12 @@
 #' @param conceptRecommender        An object of class `ConceptRecommender` for recommending additional concepts.
 #' @param conceptAdjudicator        An object of class `ConceptAdjudicator` for adjudicating recommended concepts.
 #' @param condenseConceptSet        Condense the resulting concept set?
+#' @param fuzzyVocabSearchType      For drugs: type of fuzzy vocabulary search. Currently only 'HECATE' is supported.
+#' @param batchSize                 For drugs: The size of the batches fed to the LLM for adjudication.
 #'
 #' @description
-#' Follows the following flow:
-#'
-#' 1. Determine the domain of the input, and retrieves corresponding concept filters and settings.
-#' 2. If no seed concept IDs are provided, run the seed concept finder to find seed concepts.
-#' 3. Run the concept recommender to get recommended concepts.
-#' 4. Use the concept adjucator to adjudicate whether concepts belong to the concept set or not.
-#' 5. Convert the approved concepts to a concept set expression. If `condenseConceptSet = TRUE`, a parsimoneous
-#' representation will be generated.
-#'
-#' Steps 3 and 4 are executed twice.
-#'
-#' Throws an error of class `NoApprovedConceptsError` if none of the recommended concepts are approved during
-#' adjudiction.
+#' This is a convenience function that calls the LLM to determine the domain of the concept set target, and then either
+#' calls `createNonDrugConceptSet()` or `createDrugConceptSet()`, depending on the domain.
 #'
 #' @returns
 #' A concept set expression
@@ -65,7 +54,9 @@ createConceptSet <- function(
     seedConceptFinder = DefaultSeedConceptFinder$new(),
     conceptRecommender = HecateConceptRecomender$new(),
     conceptAdjudicator = DefaultConceptAdjudicator$new(),
-    condenseConceptSet = TRUE) {
+    condenseConceptSet = TRUE,
+    fuzzyVocabSearchType = "HECATE",
+    batchSize = 20) {
   errorMessages <- checkmate::makeAssertCollection()
   checkmate::assertCharacter(name, len = 1, add = errorMessages)
   checkmate::assertCharacter(clinicalDefinition, len = 1, null.ok = TRUE, add = errorMessages)
@@ -80,159 +71,50 @@ createConceptSet <- function(
   checkmate::assertR6(conceptRecommender, "ConceptRecommender", add = errorMessages)
   checkmate::assertR6(conceptAdjudicator, "ConceptAdjudicator", add = errorMessages)
   checkmate::assertLogical(condenseConceptSet, add = errorMessages)
+  checkmate::assertChoice(fuzzyVocabSearchType, choices = c("HECATE"), add = errorMessages)
+  checkmate::assertInt(batchSize, lower = 1, add = errorMessages)
   checkmate::reportAssertions(collection = errorMessages)
-
-  start <- Sys.time()
 
   if (!is.null(cacheFolder) && !dir.exists(cacheFolder)) {
     dir.create(cacheFolder, recursive = TRUE)
   }
 
-  connection <- DatabaseConnector::connect(connectionDetails)
-  on.exit(DatabaseConnector::disconnect(connection))
-
-  costTracker <- new.env()
-  costTracker$amount <- 0
-
   # Establish domain ---------------------------------------------------------------------------------------------------
   message("Determining concept set domain")
   domain <- withCache({
-    getDomain(name, llmClient, costTracker)
+    getDomain(name, llmClient, NULL)
   },
   cacheFolder = cacheFolder,
   fileName = "Domain.txt"
   )
-  domainSettings <- getDomainSettings(domain)
   message("- Domain: ", domain)
 
-  # Seed concepts ------------------------------------------------------------------------------------------------------
-  if (!is.null(seedConceptIds) && length(seedConceptIds) > 0) {
-    concepts <- withCache({
-      getConceptsFromIds(conceptIds = seedConceptIds,
-                         origin = "SEED",
-                         connection = connection,
-                         vocabDatabaseSchema = vocabDatabaseSchema)
-    },
-    cacheFolder = cacheFolder,
-    fileName = "SeedConcepts.csv"
-    )
-  } else {
-    message("Finding seed concepts")
-    concepts <- withCache({
-      seedConceptFinder$findSeedConcepts(name = name,
-                                         clinicalDefinition = clinicalDefinition,
-                                         llmClient = llmClient,
-                                         costTracker = costTracker,
-                                         domainSettings = domainSettings,
-                                         excludedVocabularyIds = excludedVocabularyIds,
-                                         connection = connection,
-                                         vocabDatabaseSchema = vocabDatabaseSchema)
-    },
-    cacheFolder = cacheFolder,
-    fileName = "SeedConcepts.csv"
-    )
-    message("- Found total of ", nrow(concepts), " seed concept IDs")
-  }
-
-  # Recommend - adjudicate iterations ----------------------------------------------------------------------------------
-  for (iteration in 1:2) {
-    message("Starting iteration ", iteration)
-
-    message("Getting recommendations")
-    if (iteration == 1) {
-      conceptIds <- concepts |>
-        pull(.data$conceptId)
-    } else {
-      conceptIds <- concepts |>
-        filter(.data$status == "APPROVED") |>
-        pull(.data$conceptId)
-    }
-    recommendedConcepts <- withCache({
-      recommendedConcepts <- conceptRecommender$recommendConcepts(conceptIds = conceptIds,
-                                                                  domainSettings = domainSettings,
-                                                                  excludedVocabularyIds = excludedVocabularyIds,
-                                                                  connection = connection,
-                                                                  vocabDatabaseSchema = vocabDatabaseSchema,
-                                                                  iteration = iteration)
-      recommendedConcepts |>
-        filter(!.data$conceptId %in% concepts$conceptId)
-    },
-    cacheFolder = cacheFolder,
-    fileName = sprintf("RecommendConcepts_%d.csv", iteration)
-    )
-    concepts <- concepts |>
-      bind_rows(recommendedConcepts)
-    message("- ", nrow(recommendedConcepts), " concepts added by recommender")
-
-    message("Adjudicating recommendations")
-    conceptsToAdjudicate <- concepts |>
-      filter(.data$status == "UNADJUDICATED")
-    adjudicatedConcepts <- withCache({
-      conceptAdjudicator$adjudicateConcepts(concepts = conceptsToAdjudicate,
-                                            name = name,
-                                            clinicalDefinition = clinicalDefinition,
-                                            llmClient = llmClient,
-                                            costTracker = costTracker)
-    },
-    cacheFolder = cacheFolder,
-    fileName = sprintf("AdjudicatedConcepts_%d.csv", iteration)
-    )
-    message("- Approved ", sum(adjudicatedConcepts$status == "APPROVED"), " of ", nrow(adjudicatedConcepts), " new concepts")
-
-    concepts <- concepts |>
-      filter(!.data$conceptId %in% adjudicatedConcepts$conceptId) |>
-      bind_rows(adjudicatedConcepts)
-
-    approvedCount <- concepts |>
-      filter(.data$status == "APPROVED") |>
-      count() |>
-      pull()
-    if (approvedCount == 0) {
-      error <- errorCondition(
-        message = "No concepts were approved in adjudication. Broaden either the set of seed concepts or the clinical definition",
-        class = "NoApprovedConceptsError"
-      )
-      stop(error)
-    }
-  }
-
-  # Convert to (condensed) concept set expression ----------------------------------------------------------------------
-  if (!is.null(cacheFolder)) {
-    readr::write_csv(concepts, file.path(cacheFolder, "FinalConcepts.csv"))
-  }
-  conceptSetExpression <- withCache({
-    conceptSetExpression <- asConceptSetExpression(concepts = concepts,
-                                                   name = name,
-                                                   connection = connection,
-                                                   vocabDatabaseSchema = vocabDatabaseSchema)
-    if (condenseConceptSet) {
-      message("Condensing concept set expression")
-      conceptSetExpression <- doCondense(conceptSetExpression = conceptSetExpression,
-                                         connection = connection,
-                                         vocabDatabaseSchema = vocabDatabaseSchema,
-                                         tempEmulationSchema = tempEmulationSchema,
-                                         excludedVocabularyIds = excludedVocabularyIds)
-    }
-    conceptSetExpression
-  },
-  cacheFolder = cacheFolder,
-  fileName = "ConceptSetExpression.json"
-  )
-
-  delta <- Sys.time() - start
-  message("Creating concept set took ", signif(delta, 3), " ", attr(delta, "units"), " and cost $", costTracker$amount, ".")
-  return(conceptSetExpression)
-}
-
-doCondense <- function(conceptSetExpression, connection, vocabDatabaseSchema, tempEmulationSchema, excludedVocabularyIds) {
-  conceptSetData <- fetchCondenserConceptSetData(
-    conceptSetExpression = conceptSetExpression,
-    connection = connection,
-    cdmDatabaseSchema = vocabDatabaseSchema,
+  # Call appropriate function ------------------------------------------------------------------------------------------
+  if (domain == "DRUG") {
+    conceptSet <- createDrugConceptSet(
+    name = name,
+    clinicalDefinition = clinicalDefinition,
+    llmClient = llmClient,
+    connectionDetails = connectionDetails,
+    vocabDatabaseSchema = vocabDatabaseSchema,
     tempEmulationSchema = tempEmulationSchema,
-    excludedVocabularies = excludedVocabularyIds
-  )
-  condensedConceptSet <- condenseConceptSet(conceptSetData)
-  condensedConceptSet <- jsonlite::toJSON(condensedConceptSet, pretty = TRUE, auto_unbox = TRUE)
-  return(condensedConceptSet)
+    cacheFolder = cacheFolder,
+    fuzzyVocabSearchType = fuzzyVocabSearchType)
+  } else {
+    conceptSet <- createNonDrugConceptSet(
+    name = name,
+    seedConceptIds = seedConceptIds,
+    clinicalDefinition = clinicalDefinition,
+    llmClient = llmClient,
+    connectionDetails = connectionDetails,
+    vocabDatabaseSchema = vocabDatabaseSchema,
+    tempEmulationSchema = tempEmulationSchema,
+    cacheFolder = cacheFolder,
+    excludedVocabularyIds = excludedVocabularyIds,
+    seedConceptFinder = seedConceptFinder,
+    conceptRecommender = conceptRecommender,
+    conceptAdjudicator = conceptAdjudicator,
+    condenseConceptSet = condenseConceptSet)
+  }
+
 }

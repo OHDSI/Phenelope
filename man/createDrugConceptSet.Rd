@@ -12,7 +12,8 @@ createDrugConceptSet(
   vocabDatabaseSchema,
   tempEmulationSchema = getOption("sqlRenderTempEmulationSchema"),
   cacheFolder = NULL,
-  fuzzyVocabSearchType = "HECATE"
+  fuzzyVocabSearchType = "HECATE",
+  batchSize = 20
 )
 }
 \arguments{
@@ -35,10 +36,13 @@ the user has write access.}
 \item{cacheFolder}{Optional: Folder where intermediary results can be stored.}
 
 \item{fuzzyVocabSearchType}{Type of fuzzy vocabulary search. Currently only 'HECATE' is supported.}
+
+\item{batchSize}{The size of the batches fed to the LLM for adjudication.}
 }
 \value{
 A concept set expression
 }
 \description{
-Create a drug concept set
+Creates a concept set for drugs. For other domains, use the \code{createNonDrugConceptSet()} function.
+Alternatively, you can call the \code{createConceptSet()} function which automatically routes to the correct function.
 }

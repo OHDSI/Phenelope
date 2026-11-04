@@ -17,7 +17,9 @@ createConceptSet(
   seedConceptFinder = DefaultSeedConceptFinder$new(),
   conceptRecommender = HecateConceptRecomender$new(),
   conceptAdjudicator = DefaultConceptAdjudicator$new(),
-  condenseConceptSet = TRUE
+  condenseConceptSet = TRUE,
+  fuzzyVocabSearchType = "HECATE",
+  batchSize = 20
 )
 }
 \arguments{
@@ -50,23 +52,15 @@ the user has write access.}
 \item{conceptAdjudicator}{An object of class \code{ConceptAdjudicator} for adjudicating recommended concepts.}
 
 \item{condenseConceptSet}{Condense the resulting concept set?}
+
+\item{fuzzyVocabSearchType}{For drugs: type of fuzzy vocabulary search. Currently only 'HECATE' is supported.}
+
+\item{batchSize}{For drugs: The size of the batches fed to the LLM for adjudication.}
 }
 \value{
 A concept set expression
 }
 \description{
-Follows the following flow:
-\enumerate{
-\item Determine the domain of the input, and retrieves corresponding concept filters and settings.
-\item If no seed concept IDs are provided, run the seed concept finder to find seed concepts.
-\item Run the concept recommender to get recommended concepts.
-\item Use the concept adjucator to adjudicate whether concepts belong to the concept set or not.
-\item Convert the approved concepts to a concept set expression. If \code{condenseConceptSet = TRUE}, a parsimoneous
-representation will be generated.
-}
-
-Steps 3 and 4 are executed twice.
-
-Throws an error of class \code{NoApprovedConceptsError} if none of the recommended concepts are approved during
-adjudiction.
+This is a convenience function that calls the LLM to determine the domain of the concept set target, and then either
+calls \code{createNonDrugConceptSet()} or \code{createDrugConceptSet()}, depending on the domain.
 }

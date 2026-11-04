@@ -1,7 +1,7 @@
 Phenelope 0.2.0
 ===============
 
-Complete refactoring of Phenelope code. Creating separate `createConceptSet()` and `createDrugConceptSet()` functions.
+Complete refactoring of Phenelope code. Creating separate `createNonDrugConceptSet()` and `createDrugConceptSet()` functions, and `createConceptSet()` convenience function that calls either.
 
 Phenelope 0.1.2
 ===============
