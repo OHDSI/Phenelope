@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions andD
 # limitations under the License.
 
+# library(dplyr)
 # source("R/HelperFunctions.R")
 
 #' Create a concept set (not drugs)
@@ -48,7 +49,7 @@
 #'
 #' Steps 3 and 4 are executed twice.
 #'
-#' Throws an error of class `NoApprovedConceptsError` if none of the recommended concepts are approved during
+#' Throws a warning of class `NoApprovedConceptsWarning` if none of the recommended concepts are approved during
 #' adjudication.
 #'
 #' @returns
@@ -191,11 +192,11 @@ createNonDrugConceptSet <- function(
       count() |>
       pull()
     if (approvedCount == 0) {
-      error <- errorCondition(
-        message = "No concepts were approved in adjudication. Broaden either the set of seed concepts or the clinical definition",
-        class = "NoApprovedConceptsError"
+      warning <- warningCondition(
+        message = "No concepts were approved in adjudication. You may need to either the set of seed concepts or the clinical definition",
+        class = "NoApprovedConceptsWarning"
       )
-      stop(error)
+      warning(warning)
     }
   }
 
@@ -208,7 +209,7 @@ createNonDrugConceptSet <- function(
                                                    name = name,
                                                    connection = connection,
                                                    vocabDatabaseSchema = vocabDatabaseSchema)
-    if (condenseConceptSet) {
+    if (condenseConceptSet && approvedCount > 0) {
       message("Condensing concept set expression")
       conceptSetExpression <- doCondense(conceptSetExpression = conceptSetExpression,
                                          connection = connection,

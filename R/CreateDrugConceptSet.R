@@ -33,6 +33,8 @@
 #' Creates a concept set for drugs. For other domains, use the `createNonDrugConceptSet()` function.
 #' Alternatively, you can call the `createConceptSet()` function which automatically routes to the correct function.
 #'
+#' Throws a warning of class `NoApprovedConceptsWarning` if none of the recommended concepts are approved during
+#' adjudication.
 #'
 #' @returns
 #' A concept set expression
@@ -126,11 +128,11 @@ createDrugConceptSet <- function(
     pull()
   message("- Approved ", approvedCount, " of ", nrow(concepts), " new concepts")
   if (approvedCount == 0) {
-    error <- errorCondition(
-      message = "No concepts were approved in adjudication. Broaden either the set of seed concepts or the clinical definition",
-      class = "NoApprovedConceptsError"
+    warning <- warningCondition(
+      message = "No concepts were approved in adjudication. You may need to either the set of seed concepts or the clinical definition",
+      class = "NoApprovedConceptsWarning"
     )
-    stop(error)
+    warning(warning)
   }
   conceptSetExpression <- withCache({
     asDrugConceptSetExpression(concepts = concepts,

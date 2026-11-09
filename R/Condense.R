@@ -56,14 +56,12 @@ condenseConceptSet <- function(conceptSetData) {
   conceptSetExpression <- conceptSetExpression |>
     inner_join(conceptSetData$conceptMetaData, by = join_by("conceptId"))
 
-  ####### jns added code
   if (nrow(conceptSetExpression) > 0) {
     conceptSetExpression$standardConceptCaption <- "Unknown"
     conceptSetExpression$standardConceptCaption[conceptSetExpression$standardConcept == "N"] <- "Non-Standard"
     conceptSetExpression$standardConceptCaption[conceptSetExpression$standardConcept == "S"] <- "Standard"
     conceptSetExpression$standardConceptCaption[conceptSetExpression$standardConcept == "C"] <- "Classification"
   }
-  ###########
 
   # row = rows[[1]]
   toCirceConcept <- function(row) {

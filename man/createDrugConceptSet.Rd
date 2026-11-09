@@ -45,4 +45,7 @@ A concept set expression
 \description{
 Creates a concept set for drugs. For other domains, use the \code{createNonDrugConceptSet()} function.
 Alternatively, you can call the \code{createConceptSet()} function which automatically routes to the correct function.
+
+Throws a warning of class \code{NoApprovedConceptsWarning} if none of the recommended concepts are approved during
+adjudication.
 }

@@ -182,8 +182,9 @@ asDrugConceptSetExpression <- function(concepts, name, connection, vocabDatabase
     pull(.data$conceptId)
 
   conceptSet <- Capr::cs(Capr::descendants(approvedConceptIds), name = name)
-
-  conceptSet <- Capr::getConceptSetDetails(conceptSet, connection, vocabularyDatabaseSchema = vocabDatabaseSchema)
+  if (length(approvedConceptIds) > 0) {
+    conceptSet <- Capr::getConceptSetDetails(conceptSet, connection, vocabularyDatabaseSchema = vocabDatabaseSchema)
+  }
   json <- Capr::as.json(conceptSet)
   return(json)
 }
