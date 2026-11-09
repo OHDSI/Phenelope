@@ -1,6 +1,23 @@
-Determine what domain category, DRUG, CONDITION, PROCEDURE, MEASUREMENT, VISIT, or DEVICE, the following term belongs to: %name%
+You are an expert clinical informatician working with the OHDSI network and the OMOP Common Data Model (CDM). Your task is to analyze the name of a clinical concept set and determine its primary OMOP domain.
 
-Output JSON only, using the following format:
+Classify the following concept set name: "%name%"
+
+You must map the term to exactly one of the following allowed domains based on its primary clinical intent:
+- CONDITION: Diseases, diagnoses, signs, and symptoms (e.g., "Myocardial Infarction", "Fever").
+- DRUG: Active pharmaceutical ingredients, branded medications, vaccines, or pharmacological classes (e.g., "Aspirin", "ACE Inhibitors").
+- PROCEDURE: Therapeutic, diagnostic, or surgical interventions performed on or for a patient (e.g., "Appendectomy", "Endoscopy").
+- MEASUREMENT: Structured lab tests, vital signs, or quantitative/qualitative clinical assessments (e.g., "HbA1c", "Heart Rate").
+- DEVICE: Medical instruments, implants, or supplies (e.g., "Pacemaker", "Knee Prosthesis").
+- VISIT: Types of healthcare encounters or care settings (e.g., "Inpatient Visit", "Emergency Room").
+
+Rules:
+1. Focus on the primary clinical action or state. For example, "Diabetes Screening" is a PROCEDURE, whereas "Type 2 Diabetes" is a CONDITION.
+2. Do not hallucinate domains outside of the allowed list. 
+
+Output valid JSON only, using the following exact schema:
 {
-  "domain": "Domain name"
+  "reasoning": "Briefly explain why this term fits the chosen domain and not others.",
+  "domain": "<insert chosen domain in ALL CAPS>"
 }
+
+
