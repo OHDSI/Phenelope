@@ -69,7 +69,6 @@ To disable the quick screen stage, set \code{nForQuickScreen = 999999}.
   batchSize = 20,
   nForQuickScreen = 500,
   quickScreenBatchSize = 200,
-  maxN = 5000,
   prompt = NULL,
   systemPrompt = NULL,
   quickScreenPrompt = NULL,
@@ -83,8 +82,6 @@ To disable the quick screen stage, set \code{nForQuickScreen = 999999}.
       \item{\code{batchSize}}{The number of concepts to adjudicate at once.}
       \item{\code{nForQuickScreen}}{The minimum number of concepts to trigger the quick screening.}
       \item{\code{quickScreenBatchSize}}{The number of concepts to enter quick screening at once.}
-      \item{\code{maxN}}{If the number of concepts to adjudicate is greater than this number, an error of
-class \code{TooManyConceptsError} is thrown.}
       \item{\code{prompt}}{The prompt for the main concept adjudication. See Details for requirements}
       \item{\code{systemPrompt}}{The system prompt for the main concept adjudication. See Details for requirements}
       \item{\code{quickScreenPrompt}}{The prompt for the quick screening. See Details for requirements}

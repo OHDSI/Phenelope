@@ -31,6 +31,9 @@
 #' @template ExcludedVocabularyIds
 #' @param seedConceptFinder         An object of class `SeedConceptFinder` for finding seed concepts when not provided.
 #' @param conceptRecommender        An object of class `ConceptRecommender` for recommending additional concepts.
+#' @param maxNforAdjudication       If the number of concepts to adjudicate is greater than this number, a warning of
+#'                                  class `TooManyConceptsWarning` is thrown, and the concept set will be simplified to
+#'                                  the first seed concept plus descendants.
 #' @param conceptAdjudicator        An object of class `ConceptAdjudicator` for adjudicating recommended concepts.
 #' @param condenseConceptSet        Condense the resulting concept set?
 #'
@@ -68,6 +71,7 @@ createNonDrugConceptSet <- function(
     excludedVocabularyIds = c("ICDO3"),
     seedConceptFinder = DefaultSeedConceptFinder$new(),
     conceptRecommender = HecateConceptRecomender$new(),
+    maxNforAdjudication = 5000,
     conceptAdjudicator = DefaultConceptAdjudicator$new(),
     condenseConceptSet = TRUE) {
   errorMessages <- checkmate::makeAssertCollection()
@@ -82,6 +86,7 @@ createNonDrugConceptSet <- function(
   checkmate::assertCharacter(excludedVocabularyIds, add = errorMessages)
   checkmate::assertR6(seedConceptFinder, "SeedConceptFinder", add = errorMessages)
   checkmate::assertR6(conceptRecommender, "ConceptRecommender", add = errorMessages)
+  checkmate::assertIntegerish(maxNforAdjudication, len = 1, lower = 1, add = errorMessages)
   checkmate::assertR6(conceptAdjudicator, "ConceptAdjudicator", add = errorMessages)
   checkmate::assertLogical(condenseConceptSet, add = errorMessages)
   checkmate::reportAssertions(collection = errorMessages)
@@ -122,7 +127,7 @@ createNonDrugConceptSet <- function(
     )
   } else {
     message("Finding seed concepts")
-    concepts <- withCache({
+    seedConcepts <- withCache({
       seedConceptFinder$findSeedConcepts(name = name,
                                          clinicalDefinition = clinicalDefinition,
                                          llmClient = llmClient,
@@ -139,6 +144,7 @@ createNonDrugConceptSet <- function(
   }
 
   # Recommend - adjudicate iterations ----------------------------------------------------------------------------------
+  concepts <- seedConcepts
   for (iteration in 1:2) {
     message("Starting iteration ", iteration)
 
@@ -171,6 +177,22 @@ createNonDrugConceptSet <- function(
     message("Adjudicating recommendations")
     conceptsToAdjudicate <- concepts |>
       filter(.data$status == "UNADJUDICATED")
+
+    if (nrow(conceptsToAdjudicate) > maxNforAdjudication) {
+      warning <- warningCondition(
+        message = sprintf(paste("Number of concepts to adjudicate (%d) exceeds maximum allowed (%d).",
+                                "Returning simple expression with first seed concept + descendants"),
+                          nrow(conceptsToAdjudicate),
+                          maxNforAdjudication),
+        class = "TooManyConceptsWarning"
+      )
+      warning(warning)
+      concepts <- seedConcepts |>
+        slice_head(n = 1) |>
+        mutate(status = "APPROVED")
+      break
+    }
+
     adjudicatedConcepts <- withCache({
       conceptAdjudicator$adjudicateConcepts(concepts = conceptsToAdjudicate,
                                             name = name,

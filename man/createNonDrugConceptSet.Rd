@@ -16,6 +16,7 @@ createNonDrugConceptSet(
   excludedVocabularyIds = c("ICDO3"),
   seedConceptFinder = DefaultSeedConceptFinder$new(),
   conceptRecommender = HecateConceptRecomender$new(),
+  maxNforAdjudication = 5000,
   conceptAdjudicator = DefaultConceptAdjudicator$new(),
   condenseConceptSet = TRUE
 )
@@ -46,6 +47,10 @@ the user has write access.}
 \item{seedConceptFinder}{An object of class \code{SeedConceptFinder} for finding seed concepts when not provided.}
 
 \item{conceptRecommender}{An object of class \code{ConceptRecommender} for recommending additional concepts.}
+
+\item{maxNforAdjudication}{If the number of concepts to adjudicate is greater than this number, a warning of
+class \code{TooManyConceptsWarning} is thrown, and the concept set will be simplified to
+the first seed concept plus descendants.}
 
 \item{conceptAdjudicator}{An object of class \code{ConceptAdjudicator} for adjudicating recommended concepts.}
 

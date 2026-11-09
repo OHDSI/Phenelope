@@ -28,6 +28,9 @@
 #' @template ExcludedVocabularyIds
 #' @param seedConceptFinder         An object of class `SeedConceptFinder` for finding seed concepts when not provided.
 #' @param conceptRecommender        An object of class `ConceptRecommender` for recommending additional concepts.
+#' @param maxNforAdjudication       If the number of concepts to adjudicate is greater than this number, a warning of
+#'                                  class `TooManyConceptsWarning` is thrown, and the concept set will be simplified to
+#'                                  the first seed concept plus descendants.
 #' @param conceptAdjudicator        An object of class `ConceptAdjudicator` for adjudicating recommended concepts.
 #' @param condenseConceptSet        Condense the resulting concept set?
 #' @param fuzzyVocabSearchType      For drugs: type of fuzzy vocabulary search. Currently only 'HECATE' is supported.
@@ -53,6 +56,7 @@ createConceptSet <- function(
     excludedVocabularyIds = c("ICDO3"),
     seedConceptFinder = DefaultSeedConceptFinder$new(),
     conceptRecommender = HecateConceptRecomender$new(),
+    maxNforAdjudication = 5000,
     conceptAdjudicator = DefaultConceptAdjudicator$new(),
     condenseConceptSet = TRUE,
     fuzzyVocabSearchType = "HECATE",
