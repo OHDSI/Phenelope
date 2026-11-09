@@ -118,6 +118,7 @@ createConceptSet <- function(
     excludedVocabularyIds = excludedVocabularyIds,
     seedConceptFinder = seedConceptFinder,
     conceptRecommender = conceptRecommender,
+    maxNforAdjudication = maxNforAdjudication,
     conceptAdjudicator = conceptAdjudicator,
     condenseConceptSet = condenseConceptSet)
   }

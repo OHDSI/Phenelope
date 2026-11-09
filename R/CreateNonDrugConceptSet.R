@@ -140,7 +140,7 @@ createNonDrugConceptSet <- function(
     cacheFolder = cacheFolder,
     fileName = "SeedConcepts.csv"
     )
-    message("- Found total of ", nrow(concepts), " seed concept IDs")
+    message("- Found total of ", nrow(seedConcepts), " seed concept IDs")
   }
 
   # Recommend - adjudicate iterations ----------------------------------------------------------------------------------
@@ -187,10 +187,18 @@ createNonDrugConceptSet <- function(
         class = "TooManyConceptsWarning"
       )
       warning(warning)
-      concepts <- seedConcepts |>
-        slice_head(n = 1) |>
-        mutate(status = "APPROVED")
-      break
+      concept <- seedConcepts |>
+        slice_head(n = 1)
+      conceptSetExpression <- withCache({
+        asConceptPlusDescendantsExpression(concept = concept,
+                                           name = name,
+                                           connection = connection,
+                                           vocabDatabaseSchema = vocabDatabaseSchema)
+      },
+      cacheFolder = cacheFolder,
+      fileName = "ConceptSetExpression.json"
+      )
+      return(conceptSetExpression)
     }
 
     adjudicatedConcepts <- withCache({
@@ -209,11 +217,7 @@ createNonDrugConceptSet <- function(
       filter(!.data$conceptId %in% adjudicatedConcepts$conceptId) |>
       bind_rows(adjudicatedConcepts)
 
-    approvedCount <- concepts |>
-      filter(.data$status == "APPROVED") |>
-      count() |>
-      pull()
-    if (approvedCount == 0) {
+    if (countApproved(concepts) == 0) {
       warning <- warningCondition(
         message = "No concepts were approved in adjudication. You may need to either the set of seed concepts or the clinical definition",
         class = "NoApprovedConceptsWarning"
@@ -231,7 +235,7 @@ createNonDrugConceptSet <- function(
                                                    name = name,
                                                    connection = connection,
                                                    vocabDatabaseSchema = vocabDatabaseSchema)
-    if (condenseConceptSet && approvedCount > 0) {
+    if (condenseConceptSet && countApproved(concepts) > 0) {
       message("Condensing concept set expression")
       conceptSetExpression <- doCondense(conceptSetExpression = conceptSetExpression,
                                          connection = connection,

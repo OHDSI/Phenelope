@@ -207,3 +207,18 @@ getConceptsFromIds <- function(conceptIds, origin = "SEED", status = "UNADJUDICA
   concepts <- asConcepts(concepts, origin = origin, status = status)
   return(concepts)
 }
+
+asConceptPlusDescendantsExpression <- function(concept, name, connection, vocabDatabaseSchema) {
+  conceptSet <- Capr::cs(Capr::descendants(concept$conceptId), name = name)
+  conceptSet <- Capr::getConceptSetDetails(conceptSet, connection, vocabularyDatabaseSchema = vocabDatabaseSchema)
+  json <- Capr::as.json(conceptSet)
+  return(json)
+}
+
+countApproved <- function(concepts) {
+  approvedCount <- concepts |>
+    filter(.data$status == "APPROVED") |>
+    count() |>
+    pull()
+  return(approvedCount)
+}
