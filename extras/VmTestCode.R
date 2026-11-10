@@ -16,7 +16,7 @@ cd <- DatabaseConnector::createConnectionDetails(
   password = keyring::key_get("databricksToken")
 )
 # options(sqlRenderTempEmulationSchema = "scratch.scratch_mschuemi")
-emulationSchema = "scratch.scratch_mschuemi"
+
 
 targetName <- "Acute liver failure"
 seedConceptId <- NULL
@@ -59,6 +59,10 @@ seedConceptId <- NULL
 targetClinicalDefinition <- NULL
 cacheFolder <- "cacheSystemCorticosteroids"
 
+targetName <- "status epilepticus procedure codes"
+seedConceptId <- NULL
+targetClinicalDefinition <- NULL
+cacheFolder <- "cacheSystemCepc"
 
 conceptSet <- createConceptSet(
   name = targetName,

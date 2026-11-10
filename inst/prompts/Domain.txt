@@ -1,23 +1,14 @@
-You are an expert clinical informatician working with the OHDSI network and the OMOP Common Data Model (CDM). Your task is to analyze the name of a clinical concept set and determine its primary OMOP domain.
+You are an expert clinical informatician working with the OHDSI network and the OMOP Common Data Model (CDM). Your task is to analyze the name of a concept set and determine the primary OMOP domain from which concepts should be included in the set.
 
 Classify the following concept set name: "%name%"
 
-You must map the term to exactly one of the following allowed domains based on its primary clinical intent:
-- CONDITION: Diseases, diagnoses, signs, and symptoms (e.g., "Myocardial Infarction", "Fever").
-- DRUG: Active pharmaceutical ingredients, branded medications, vaccines, or pharmacological classes (e.g., "Aspirin", "ACE Inhibitors").
-- PROCEDURE: Therapeutic, diagnostic, or surgical interventions performed on or for a patient (e.g., "Appendectomy", "Endoscopy").
-- MEASUREMENT: Structured lab tests, vital signs, or quantitative/qualitative clinical assessments (e.g., "HbA1c", "Heart Rate").
-- DEVICE: Medical instruments, implants, or supplies (e.g., "Pacemaker", "Knee Prosthesis").
-- VISIT: Types of healthcare encounters or care settings (e.g., "Inpatient Visit", "Emergency Room").
-
 Rules:
-1. Focus on the primary clinical action or state. For example, "Diabetes Screening" is a PROCEDURE, whereas "Type 2 Diabetes" is a CONDITION.
-2. Do not hallucinate domains outside of the allowed list. 
+1. Focus on the intended content of the concept set. For example, for "Type 2 Diabetes diagnostic procedures" the intend is PROCEDURE, whereas for "Type 2 Diabetes" it is CONDITION.
+2. Choose only from these domains: DRUG, CONDITION, PROCEDURE, MEASUREMENT, VISIT, or DEVICE.
 
 Output valid JSON only, using the following exact schema:
 {
-  "reasoning": "Briefly explain why this term fits the chosen domain and not others.",
-  "domain": "<insert chosen domain in ALL CAPS>"
+	"term": "Name of the search term",
+	"rationale": "Rationale for domain choice",
+	"domain": "Domain name in all caps"
 }
-
-

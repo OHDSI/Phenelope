@@ -36,7 +36,8 @@ getDomain <- function(name, llmClient, costTracker = NULL) {
   prompt <- paste(readLines(promptFile), collapse = "\n")
   prompt <- gsub("%name%", name, prompt)
   outputType <- ellmer::type_object(
-    reasoning = ellmer::type_string(),
+    term = ellmer::type_string(),
+    rationale = ellmer::type_string(),
     domain = ellmer::type_enum(values = c("DRUG","CONDITION","PROCEDURE","VISIT","DEVICE", "MEASUREMENT"))
   )
   domain <- queryLlm(prompt,
