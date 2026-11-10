@@ -81,13 +81,18 @@ HecateConceptRecomender <- R6::R6Class(
                                  vocabDatabaseSchema,
                                  iteration) {
       errorMessages <- checkmate::makeAssertCollection()
-      checkmate::assertIntegerish(conceptIds, min.len = 1, add = errorMessages)
+      checkmate::assertIntegerish(conceptIds, min.len = 0, add = errorMessages)
       checkmate::assertClass(domainSettings, "DomainSettings", add = errorMessages)
       checkmate::assertCharacter(excludedVocabularyIds, null.ok = TRUE, add = errorMessages)
       checkmate::assertClass(connection, "DatabaseConnectorConnection", add = errorMessages)
       checkmate::assertCharacter(vocabDatabaseSchema, len = 1, add = errorMessages)
       checkmate::assertInteger(iteration, min.len = 1, add = errorMessages)
       checkmate::reportAssertions(collection = errorMessages)
+
+      if (length(conceptIds) == 0) {
+        warning("Cannot recommend concepts when no input concepts are available.")
+        return(getEmptyConcepts())
+      }
 
       message("  Adding descendants")
       # Note: getDescendants returns an object of type Concepts:

@@ -116,7 +116,7 @@ createNonDrugConceptSet <- function(
 
   # Seed concepts ------------------------------------------------------------------------------------------------------
   if (!is.null(seedConceptIds) && length(seedConceptIds) > 0) {
-    concepts <- withCache({
+    seedConcepts <- withCache({
       getConceptsFromIds(conceptIds = seedConceptIds,
                          origin = "SEED",
                          connection = connection,
@@ -223,6 +223,7 @@ createNonDrugConceptSet <- function(
         class = "NoApprovedConceptsWarning"
       )
       warning(warning)
+      break
     }
   }
 
