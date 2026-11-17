@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Phenelope</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@
                         <h4 data-toc-skip class="author">Joel N.
 Swerdel</h4>
             
-            <h4 data-toc-skip class="date">2026-10-13</h4>
+            <h4 data-toc-skip class="date">2026-11-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/OHDSI/Phenelope/blob/HEAD/vignettes/CreatingLLMConceptSets.rmd" class="external-link"><code>vignettes/CreatingLLMConceptSets.rmd</code></a></small>
       <div class="hidden name"><code>CreatingLLMConceptSets.rmd</code></div>
@@ -180,7 +180,7 @@ the idea for which we want to create a concept set:</p>
 concept set by calling the createConceptSet() function as shown
 below:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># run the</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>finalSet <span class="ot">&lt;-</span> Penelope<span class="sc">::</span><span class="fu">createConceptSet</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>finalSet <span class="ot">&lt;-</span> Phenelope<span class="sc">::</span><span class="fu">createConceptSet</span>(</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">name =</span> targetName</span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">clinicalDefinition =</span> targetClinicalDefinition,</span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="at">llmClient =</span> llmClient,</span>
@@ -189,7 +189,7 @@ below:</p>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="at">cacheFolder =</span> <span class="st">"c:/llmConceptSets/type2Dm"</span></span>
 <span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>)</span></code></pre></div>
 <p>Additionally, it is possible to provide one or more seed concepts -
-concepts that are close the concept set target - through the
+concepts that are close to the concept set target - through the
 <code>seedConceptIds</code> argument.</p>
 </div>
 </div>
@@ -230,7 +230,7 @@ or all of the process.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>
