@@ -93,7 +93,7 @@ Once you have the necessary information, you are ready to create you concept set
 
 ```{r tidy=FALSE,eval=FALSE}
 # run the
-finalSet <- Penelope::createConceptSet(
+finalSet <- Phenelope::createConceptSet(
   name = targetName
   clinicalDefinition = targetClinicalDefinition,
   llmClient = llmClient,
@@ -103,7 +103,7 @@ finalSet <- Penelope::createConceptSet(
 )
 ```
 
-Additionally, it is possible to provide one or more seed concepts - concepts that are close the concept set target - through the `seedConceptIds` argument.
+Additionally, it is possible to provide one or more seed concepts - concepts that are close to the concept set target - through the `seedConceptIds` argument.
 
 # Output
 
