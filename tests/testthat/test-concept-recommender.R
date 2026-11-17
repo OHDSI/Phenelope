@@ -29,7 +29,7 @@ test_that("HecateConceptRecomender validates constructor inputs", {
 test_that("HecateConceptRecomender validates recommendation inputs", {
   recommender <- HecateConceptRecomender$new()
 
-  expect_error(recommendConcepts(recommender, conceptIds = integer()), "conceptIds")
+  expect_warning(recommendConcepts(recommender, conceptIds = integer()), "concepts")
   expect_error(recommendConcepts(recommender, conceptIds = "1"), "conceptIds")
   expect_error(recommendConcepts(recommender, domainSettings = list()), "DomainSettings")
   expect_error(recommendConcepts(recommender, excludedVocabularyIds = 1), "excludedVocabularyIds")
