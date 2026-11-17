@@ -1,3 +1,8 @@
+Phenelope 0.2.2
+===============
+1. Create single `createConceptSet()` function, eliminating `createNonDrugConceptSet()` and `createDrugConceptSet()` functions 
+2. Rename HecateConceptRecomender to HecateConceptRecommender
+
 Phenelope 0.2.0
 ===============
 

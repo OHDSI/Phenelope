@@ -18,16 +18,16 @@ recommendConcepts <- function(recommender, ...) {
   do.call(recommender$recommendConcepts, arguments)
 }
 
-test_that("HecateConceptRecomender validates constructor inputs", {
-  expect_no_error(HecateConceptRecomender$new())
-  expect_no_error(HecateConceptRecomender$new(minCount = 1))
-  expect_error(HecateConceptRecomender$new(minCount = -1), "minCount")
-  expect_error(HecateConceptRecomender$new(minCount = 1.5), "minCount")
-  expect_error(HecateConceptRecomender$new(minCount = c(1, 2)), "minCount")
+test_that("HecateConceptRecommender validates constructor inputs", {
+  expect_no_error(HecateConceptRecommender$new())
+  expect_no_error(HecateConceptRecommender$new(minCount = 1))
+  expect_error(HecateConceptRecommender$new(minCount = -1), "minCount")
+  expect_error(HecateConceptRecommender$new(minCount = 1.5), "minCount")
+  expect_error(HecateConceptRecommender$new(minCount = c(1, 2)), "minCount")
 })
 
-test_that("HecateConceptRecomender validates recommendation inputs", {
-  recommender <- HecateConceptRecomender$new()
+test_that("HecateConceptRecommender validates recommendation inputs", {
+  recommender <- HecateConceptRecommender$new()
 
   expect_warning(recommendConcepts(recommender, conceptIds = integer()), "concepts")
   expect_error(recommendConcepts(recommender, conceptIds = "1"), "conceptIds")

@@ -34,7 +34,7 @@ conceptSet <- createConceptSet(
 )
 
 # Test recommender separately:
-conceptRecommender <- HecateConceptRecomender$new(minCount = 0)
+conceptRecommender <- HecateConceptRecommender$new(minCount = 0)
 newConcepts <- conceptRecommender$recommendConcepts(conceptIds = conceptIds,
                                                     domainSettings = getDomainSettings("CONDITION"),
                                                     connection = connection,

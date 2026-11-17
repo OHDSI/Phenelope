@@ -84,7 +84,7 @@ conceptSet <- createConceptSet(
   connectionDetails = cd,
   vocabDatabaseSchema = cdmDatabaseSchema,
   seedConceptFinder = DefaultSeedConceptFinder$new(minCount = 100),
-  conceptRecommender = HecateConceptRecomender$new(minCount = 100)
+  conceptRecommender = HecateConceptRecommender$new(minCount = 100)
 )
 writeLines(conceptSet)
 

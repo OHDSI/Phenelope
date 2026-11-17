@@ -46,12 +46,12 @@ ConceptRecommender <- R6::R6Class(
 #' Concept recommender implementation using the Hecate Phoebe search.
 #'
 #` @export
-HecateConceptRecomender <- R6::R6Class(
-  "HecateConceptRecomender",
+HecateConceptRecommender <- R6::R6Class(
+  "HecateConceptRecommender",
   inherit = ConceptRecommender,
   public = list(
 
-    #' HecateConceptRecomender constructor
+    #' HecateConceptRecommender constructor
     #'
     #' @param minCount             Minimum record count for concepts to be considered for adjudication.
     #' @param keepLowCountConcepts If TRUE concepts are kepts with status BELOW_MIN_COUNT. These concepts will be
@@ -59,7 +59,7 @@ HecateConceptRecomender <- R6::R6Class(
     #'                             explicitly included in the concept set.
     #'
     #' @returns
-    #' An object of type `HecateConceptRecomender`.
+    #' An object of type `HecateConceptRecommender`.
     #'
     #' @export
     initialize = function(minCount = 0,

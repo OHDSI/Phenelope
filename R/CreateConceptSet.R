@@ -55,7 +55,7 @@ createConceptSet <- function(
     cacheFolder = NULL,
     excludedVocabularyIds = c("ICDO3"),
     seedConceptFinder = DefaultSeedConceptFinder$new(),
-    conceptRecommender = HecateConceptRecomender$new(),
+    conceptRecommender = HecateConceptRecommender$new(),
     maxNforAdjudication = 5000,
     conceptAdjudicator = DefaultConceptAdjudicator$new(),
     condenseConceptSet = TRUE,
